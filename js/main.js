@@ -14,15 +14,14 @@ jQuery(document).ready(function($) {
 	};
 
 	// 建立可塞選的模板產生器，用於點擊不同分類時 篩選基準category_main、sub
-	var Call_AJAX_place_data = function($clicked_target,$info_to_send,$where_to_place,$s){
-		console.log($s);
+	var Call_AJAX_place_data = function($clicked_target,$info_to_send,$where_to_place,$structure){
 		//判斷裡面是否為空，為空則抓取資料
 		if ($($where_to_place).find('.col-md-3').length == 0){
 			// 轉換為json object
 			// var before_parse = '{"category_main":'+$info_to_send+'}'; 
 			//直接將 $info_to_send的值帶入 {"category_main":$info_to_send} 將無法運作 
 			$.post('../crud/data_filtered.php', jQuery.parseJSON($info_to_send), function(data, textStatus, xhr) {
-					place_data($s,$where_to_place,data);
+					place_data($structure,$where_to_place,data);
 			});
 		}
 	}
@@ -39,7 +38,6 @@ jQuery(document).ready(function($) {
 	$('a[href="product/product_paging.html"]').on('click',function(e){
 		Page_loader(e,"product/product_paging.php",function(e){
 			// Do after_load
-			console.log('test');
 			Call_AJAX_place_data(this,'{"category_main":"women","category_sub":"upper","mode":"2"}','.product_paging .service-two','#product-list-template');
 		});
 	});
@@ -48,7 +46,6 @@ jQuery(document).ready(function($) {
 	$('a[href="product/product.html"]').on('click',function(e){
 		Page_loader(e,"product/product.php",function(e){
 			// Do after_load
-			console.log('test');
 			Call_AJAX_place_data(this,'{"category_main":"women"}','.product .row:eq(2)','#product-list-template-model');
 		});
 	});
@@ -68,7 +65,6 @@ jQuery(document).ready(function($) {
 		e.preventDefault();
 		// selected-item price
 		var price = $(this).parent().prev().prev().find('.p_prices').text();
-
 		// fetch current number
 		var number = $('.navbar-right').find('.glyphicon').text();
 		// renew total number
