@@ -67,7 +67,7 @@
     <div class="col-md-3 col-sm-6 img-portfolio">
         <div class="{{active_stat}}">{{activity_text}}</div>
             <a href="product/Product_detail.html">
-                <img class="img-responsive img-hover" src="{{img_url}}" alt="">
+                <img class="img-responsive img-hover" src="{{img_url_itemonly}}" alt="">
             </a>
         <div class="caption">
             <h3>{{title}}</h3>
@@ -85,6 +85,28 @@
     </div>
 </script>
 
+ <!-- Product list Template MODEL ONLY -->
+ <script id="product-list-template-model" type="text/x-handlebars-template">
+    <div class="col-md-3 col-sm-6 img-portfolio">
+        <div class="{{active_stat}}">{{activity_text}}</div>
+            <a href="product/Product_detail.html">
+                <img class="img-responsive img-hover" src="{{img_url_withmodel}}" alt="">
+            </a>
+        <div class="caption">
+            <h3>{{title}}</h3>
+            <p class="right">
+                <span class="p_price">NT${{price_org}}</span>　
+                <span>活動價 NT$</span><span class="p_prices">{{price_dis}}</span>
+            </p>
+        <div class="clear"></div>
+            <p class=" text-center">
+                <a href="#" class="btn btn-primary" role="button">
+                    <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Add to Cart
+                </a>
+            </p>
+        </div>
+    </div>
+</script>
 
 <!-- jQuery -->
     <script src="js/jquery.js"></script>
