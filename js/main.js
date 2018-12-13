@@ -17,9 +17,6 @@ jQuery(document).ready(function($) {
 	var Call_AJAX_place_data = function($info_to_send,$where_to_place,$structure){
 		//判斷裡面是否為空，為空則抓取資料
 		if ($($where_to_place).find('.col-md-3').length == 0){
-			// 轉換為json object
-			// var before_parse = '{"category_main":'+$info_to_send+'}'; 
-			//直接將 $info_to_send的值帶入 {"category_main":$info_to_send} 將無法運作 
 			$.post('../crud/data_filtered.php', $info_to_send, function(data, textStatus, xhr) {
 					place_data($structure,$where_to_place,data);
 			});
