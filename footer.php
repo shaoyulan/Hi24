@@ -107,6 +107,7 @@
         </div>
     </div>
 </script>
+
 <script id="product_default_photos" type="text/x-handlebars-template">
               <div class="col-md-8 img-portfolio right">
                   <p>
