@@ -20,6 +20,9 @@
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
+    <!-- 自定義css -->
+    <link rel="stylesheet" href="css/main.css">
+
 </head>
 
 <body>

@@ -2,10 +2,10 @@
 -- version 4.7.0
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:8889
--- Generation Time: Dec 09, 2018 at 05:11 PM
--- Server version: 5.6.34-log
--- PHP Version: 7.2.1
+-- 主機: localhost:8889
+-- 產生時間： 2018-12-13 08:33:43
+-- 伺服器版本: 5.6.34-log
+-- PHP 版本： 7.2.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,13 +19,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `hi24`
+-- 資料庫： `hi24`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `header_ad`
+-- 資料表結構 `header_ad`
 --
 
 CREATE TABLE `header_ad` (
@@ -37,7 +37,7 @@ CREATE TABLE `header_ad` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `header_ad`
+-- 資料表的匯出資料 `header_ad`
 --
 
 INSERT INTO `header_ad` (`id`, `ad_stat`, `img_url`, `caption_stat`, `caption_text`) VALUES
@@ -48,7 +48,26 @@ INSERT INTO `header_ad` (`id`, `ad_stat`, `img_url`, `caption_stat`, `caption_te
 -- --------------------------------------------------------
 
 --
--- Table structure for table `product_default_photos`
+-- 資料表結構 `member`
+--
+
+CREATE TABLE `member` (
+  `id` int(11) NOT NULL,
+  `name` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(45) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- 資料表的匯出資料 `member`
+--
+
+INSERT INTO `member` (`id`, `name`, `password`) VALUES
+(1, 'shao', 'root');
+
+-- --------------------------------------------------------
+
+--
+-- 資料表結構 `product_default_photos`
 --
 
 CREATE TABLE `product_default_photos` (
@@ -61,10 +80,17 @@ CREATE TABLE `product_default_photos` (
   `product_list_ref_id` varchar(45) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- 資料表的匯出資料 `product_default_photos`
+--
+
+INSERT INTO `product_default_photos` (`id`, `main_photo`, `inner_photo1`, `inner_photo2`, `inner_photo3`, `inner_photo4`, `product_list_ref_id`) VALUES
+(1, 'image', 'images/women/sweater/sw001a-1.jpg', 'images/women/sweater/sw001a-2.jpg', 'images/women/sweater/sw001a-3.jpg', 'images/women/sweater/sw001a-4.jpg', '1');
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `product_item_detail`
+-- 資料表結構 `product_item_detail`
 --
 
 CREATE TABLE `product_item_detail` (
@@ -80,14 +106,15 @@ CREATE TABLE `product_item_detail` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `product_list`
+-- 資料表結構 `product_list`
 --
 
 CREATE TABLE `product_list` (
   `id` int(11) NOT NULL,
   `active_stat` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
   `activity_text` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `img_url` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `img_url_itemonly` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `img_url_withmodel` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   `title` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   `price_org` int(11) NOT NULL,
   `price_dis` int(11) NOT NULL,
@@ -96,69 +123,80 @@ CREATE TABLE `product_list` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `product_list`
+-- 資料表的匯出資料 `product_list`
 --
 
-INSERT INTO `product_list` (`id`, `active_stat`, `activity_text`, `img_url`, `title`, `price_org`, `price_dis`, `category_main`, `category_sub`) VALUES
-(1, 'p_active_media', 'sale', 'images/men/accessories/a001a-1.jpg', '棉質條紋寬領長袖T恤-女', 290, 260, 'men', 'upper'),
-(2, 'p_active_media bg_g', 'new', 'images/men/coat/ct001a-1.jpg', '棉質條紋寬領長袖T恤-女', 290, 260, 'men', 'upper'),
-(3, NULL, NULL, 'images/men/home$inside/h002a-2.jpg', '棉質條紋寬領長袖T恤-女', 290, 260, 'women', 'upper'),
-(4, NULL, NULL, 'images/women/sweater/sw001a-1.jpg', '棉質條紋寬領長袖T恤-女', 290, 260, 'kid', 'upper'),
-(5, NULL, NULL, 'images/women/shirt/s004a-1.jpg', '棉質條紋寬領長袖T恤-女', 290, 260, 'men', 'shoes'),
-(6, NULL, NULL, 'images/women/sweater/sw002a-1.jpg', '棉質條紋寬領長袖T恤-女', 290, 260, 'women', 'upper'),
-(7, NULL, NULL, 'images/women/coat/ct003a-3.jpg', '棉質條紋寬領長袖T恤-女', 290, 260, 'men', 'upper'),
-(8, NULL, NULL, 'images/women/sweater/sw004a-1.jpg', '棉質條紋寬領長袖T恤-女', 290, 260, 'kid', 'upper'),
-(9, 'p_active_media', 'sale', 'images/men/accessories/a001a-1.jpg', '棉質條紋寬領長袖T恤-中', 300, 400, 'men', 'upper');
+INSERT INTO `product_list` (`id`, `active_stat`, `activity_text`, `img_url_itemonly`, `img_url_withmodel`, `title`, `price_org`, `price_dis`, `category_main`, `category_sub`) VALUES
+(1, 'p_active_media', 'sale', 'images/men/accessories/a001a.jpg', 'images/men/accessories/a001a-1.jpg', '棉質條紋寬領長袖T恤-女', 290, 260, 'men', 'upper'),
+(2, 'p_active_media bg_g', 'new', 'images/men/coat/ct001a.jpg', 'images/men/coat/ct001a-1.jpg', '棉質條紋寬領長袖T恤-女', 290, 260, 'men', 'upper'),
+(3, '', '', 'images/men/home$inside/h002a.jpg', 'images/men/home$inside/h002a-2.jpg', '棉質條紋寬領長袖T恤-女', 290, 260, 'women', 'coat'),
+(4, '', '', 'images/women/sweater/sw001a.jpg', 'images/women/sweater/sw001a-1.jpg', '棉質條紋寬領長袖T恤-女', 290, 260, 'kid', 'upper'),
+(5, '', '', 'images/women/shirt/s004a.jpg', 'images/women/shirt/s004a-1.jpg', '棉質條紋寬領長袖T恤-女', 290, 260, 'men', 'shoes'),
+(6, '', '', 'images/women/sweater/sw002a.jpg', 'images/women/sweater/sw002a-1.jpg', '棉質條紋寬領長袖T恤-女', 290, 261, 'women', 'upper'),
+(7, '', '', 'images/women/coat/ct003a.jpg', 'images/women/coat/ct003a-3.jpg', '棉質條紋寬領長袖T恤-女', 290, 260, 'men', 'upper'),
+(8, '', '', 'images/women/sweater/sw004a.jpg', 'images/women/sweater/sw004a-1.jpg', '棉質條紋寬領長袖T恤-女', 290, 260, 'kid', 'upper'),
+(9, '', '', 'images/men/accessories/a001a.jpg\r\n', 'images/men/accessories/a001a-1.jpg', '棉質條紋寬領長袖T恤-女', 290, 260, 'men', 'upper');
 
 --
--- Indexes for dumped tables
+-- 已匯出資料表的索引
 --
 
 --
--- Indexes for table `header_ad`
+-- 資料表索引 `header_ad`
 --
 ALTER TABLE `header_ad`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `product_default_photos`
+-- 資料表索引 `member`
+--
+ALTER TABLE `member`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- 資料表索引 `product_default_photos`
 --
 ALTER TABLE `product_default_photos`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `product_item_detail`
+-- 資料表索引 `product_item_detail`
 --
 ALTER TABLE `product_item_detail`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `product_list`
+-- 資料表索引 `product_list`
 --
 ALTER TABLE `product_list`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- 在匯出的資料表使用 AUTO_INCREMENT
 --
 
 --
--- AUTO_INCREMENT for table `header_ad`
+-- 使用資料表 AUTO_INCREMENT `header_ad`
 --
 ALTER TABLE `header_ad`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
--- AUTO_INCREMENT for table `product_default_photos`
+-- 使用資料表 AUTO_INCREMENT `member`
+--
+ALTER TABLE `member`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- 使用資料表 AUTO_INCREMENT `product_default_photos`
 --
 ALTER TABLE `product_default_photos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
--- AUTO_INCREMENT for table `product_item_detail`
+-- 使用資料表 AUTO_INCREMENT `product_item_detail`
 --
 ALTER TABLE `product_item_detail`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `product_list`
+-- 使用資料表 AUTO_INCREMENT `product_list`
 --
 ALTER TABLE `product_list`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;COMMIT;

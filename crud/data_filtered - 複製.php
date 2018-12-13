@@ -9,8 +9,13 @@ try{
 }
 
 // 單一條件，或多重條件
-if ($_POST['mode']=='and'){
-
+if ($_POST['mode']=='2'){
+	// command SQL 
+	$sql ='SELECT * FROM `product_list` WHERE `category_main`=:category_main AND `category_sub`=:category_sub ORDER BY `id` ASC';
+	$statement = $pdo->prepare($sql);
+	$statement->bindValue(':category_main',$_POST['category_main']); 
+	$statement->bindValue(':category_sub',$_POST['category_sub']);
+	//should use " cause :category_main in $sql only accept "abc"
 }else{
 	// command SQL 
 	$sql ='SELECT * FROM `product_list` WHERE `category_main`=:category_main ORDER BY `id` ASC';

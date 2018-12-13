@@ -64,7 +64,7 @@
 
  <!-- Product list Template -->
  <script id="product-list-template" type="text/x-handlebars-template">
-    <div class="col-md-3 col-sm-6 img-portfolio">
+    <div class="col-md-3 col-sm-6 img-portfolio" data-maincat="{{category_main}}" data-subcat="{{category_sub}}" data-title="{{title}}" data-id="{{id}}">
         <div class="{{active_stat}}">{{activity_text}}</div>
             <a href="product/Product_detail.html">
                 <img class="img-responsive img-hover" src="{{img_url_itemonly}}" alt="">
@@ -77,7 +77,7 @@
             </p>
         <div class="clear"></div>
             <p class=" text-center">
-                <a href="#" class="btn btn-primary" role="button">
+                <a href="#" class="btn btn-primary" role="button" >
                     <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Add to Cart
                 </a>
             </p>
@@ -87,7 +87,7 @@
 
  <!-- Product list Template MODEL ONLY -->
  <script id="product-list-template-model" type="text/x-handlebars-template">
-    <div class="col-md-3 col-sm-6 img-portfolio">
+    <div class="col-md-3 col-sm-6 img-portfolio"  data-maincat="{{category_main}}" data-subcat="{{category_sub}}" data-title="{{title}}" data-id="{{id}}">
         <div class="{{active_stat}}">{{activity_text}}</div>
             <a href="product/Product_detail.html">
                 <img class="img-responsive img-hover" src="{{img_url_withmodel}}" alt="">

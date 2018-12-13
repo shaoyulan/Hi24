@@ -16,6 +16,12 @@ if ($_POST['mode']=='2'){
 	$statement->bindValue(':category_main',$_POST['category_main']); 
 	$statement->bindValue(':category_sub',$_POST['category_sub']);
 	//should use " cause :category_main in $sql only accept "abc"
+}elseif ($_POST['mode']=='3') {
+	// command SQL 
+	$sql ='SELECT * FROM `product_default_photos` WHERE `id`=:id ORDER BY `id` ASC';
+	$statement = $pdo->prepare($sql);
+	$statement->bindValue(':id',$_POST['id']); 
+	
 }else{
 	// command SQL 
 	$sql ='SELECT * FROM `product_list` WHERE `category_main`=:category_main ORDER BY `id` ASC';

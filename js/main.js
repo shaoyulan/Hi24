@@ -26,6 +26,14 @@ jQuery(document).ready(function($) {
 		}
 	}
 
+	// 建立可塞選的模板產生器，用於點擊不同分類時 篩選基準category_main、sub
+	var Call_AJAX_place_photo = function($clicked_target,$info_to_send,$where_to_place,$structure){
+			$.post('../crud/default_img.php', jQuery.parseJSON($info_to_send), function(data, textStatus, xhr) {
+					console.log(data);
+					place_data($structure,$where_to_place,data);
+			});
+
+	}
 	// 載入個頁面 Load specified page on click 
 	// $after_load : load 後要執行的程式
 	var Page_loader = function(e,$page_to_load,$after_load){
@@ -34,7 +42,44 @@ jQuery(document).ready(function($) {
 		$('.wraper>div:not(".index")').css('display','block').load($page_to_load,$after_load);
 	}
 
-	// 各頁點擊載入 -- WOMEN -- Upper
+	// 次分類中譯
+	var Category_translate = function($EngName){
+		// var subCat='';
+		switch($EngName){
+			case 'upper':
+				Cat = '上衣類';
+				break; 
+			case 'shirt':
+				Cat ='襯衫類'
+				break;
+			case 'coat':
+				Cat ='外套類'
+				break;
+			case 'sweater':
+				Cat ='針織衫'
+				break;
+			case 'pants':
+				Cat ='褲&裙裝'
+				break;
+			case 'home&inside':
+				Cat ='家居&內著'
+				break;
+			case 'accessories':
+				Cat ='配件'
+				break;
+		}
+		return Cat;
+	}
+
+	// 各頁點擊載入--Women 圖示那張-- -- WOMEN -- All
+	$('a[href="product/product.html"]').on('click',function(e){
+		Page_loader(e,"product/product.php",function(e){
+			// Do after_load
+			Call_AJAX_place_data(this,'{"category_main":"women"}','.product .row:eq(1)','#product-list-template-model');
+		});
+	});
+
+	// 各頁點擊載入--Women下方分頁區塊-- -- WOMEN -- Upper
 	$('a[href="product/product_paging.html"]').on('click',function(e){
 		Page_loader(e,"product/product_paging.php",function(e){
 			// Do after_load
@@ -42,11 +87,28 @@ jQuery(document).ready(function($) {
 		});
 	});
 
-	// 各頁點擊載入 -- WOMEN -- ALL
-	$('a[href="product/product.html"]').on('click',function(e){
-		Page_loader(e,"product/product.php",function(e){
+	
+
+	// 單項商品點擊載入 - -- ALL
+	$('.row').on('click','a[href="product/Product_detail.html"]',function(e){
+
+		e.stopPropagation();
+		// Breadcrumb bar
+		var title = $(this).parent().data('title');
+		var mainCat = $(this).parent().data('maincat');
+		var subCat = $(this).parent().data('subcat');
+		var subCat = Category_translate(subCat);
+		var id = $(this).parent().data('id');
+
+		console.log(subCat);
+		Page_loader(e,"product/Product_detail.php",function(e){
 			// Do after_load
-			Call_AJAX_place_data(this,'{"category_main":"women"}','.product .row:eq(2)','#product-list-template-model');
+			// Chane Breadcrumbs 
+			//**************IMPORTANT : Propagation !!******************
+			$('.breadcrumb').find('li:eq(1)').text(mainCat);
+			$('.breadcrumb').find('li:eq(2)').text(subCat);
+			$('.breadcrumb').find('li:eq(3)').text(title);
+			 Call_AJAX_place_photo(e.currentTarget,'{"id":id,"mode":"3"}','.test','#product-default_photos');
 		});
 	});
 
@@ -54,15 +116,27 @@ jQuery(document).ready(function($) {
 	place_data('#header-slider-template','.carousel-inner',headerAds);
 	// 放置不分類商品place Content products -- Category ALL
 	place_data('#product-list-template-model','#service-one .row',products);
-	// 點擊分類後顯示商品 place content products -- Category Women
+	// 點擊分類後顯示商品分頁 place content products -- Category Women
 	$('a[href="#service-two"]').on('click',Call_AJAX_place_data(this,'{"category_main":"women"}','#service-two .row','#product-list-template-model'));
 	$('a[href="#service-three"]').on('click',Call_AJAX_place_data(this,'{"category_main":"men"}','#service-three .row','#product-list-template-model'));
 	$('a[href="#service-four"]').on('click',Call_AJAX_place_data(this,'{"category_main":"kid"}','#service-four .row','#product-list-template-model'));
 
 
 	// Cart number counter
-	$('.wraper').on('click','.btn',function(e){
+	$('.wraper').on('click','.btn-primary',function(e){
 		e.preventDefault();
+		// set btn to red bgc
+		$(this).stop().toggleClass('buy');
+		
+		// show-up info 
+		$('.show-up-info').stop().toggleClass('show');
+		setTimeout(function(e){
+			$('.show-up-info').stop().toggleClass('hide');
+		},2000);
+		setTimeout(function(e){
+			$('.show-up-info').stop().removeClass('show').removeClass('hide');
+		},7000);
+
 		// selected-item price
 		var price = $(this).parent().prev().prev().find('.p_prices').text();
 		// fetch current number
@@ -115,6 +189,13 @@ jQuery(document).ready(function($) {
 		var text = '目前有'+total+'樣商品，共';
 		$(this).closest('.navbar-right').find('.cart-total').text(text).stop().slideToggle(400);
 	});
+
+
+// InterFace UI/UX
+	$('#scroll-top').click(function(e){
+		console.log('test');
+		$('body').animate({'scrollTop':0},600);
+	})
 //paging
 
 
