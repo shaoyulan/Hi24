@@ -17,17 +17,22 @@ jQuery(document).ready(function($) {
 	var Call_AJAX_place_data = function($clicked_target,$info_to_send,$where_to_place,$structure){
 		//判斷裡面是否為空，為空則抓取資料
 		if ($($where_to_place).find('.col-md-3').length == 0){
-			console.log('run');
 			// 轉換為json object
 			// var before_parse = '{"category_main":'+$info_to_send+'}'; 
 			//直接將 $info_to_send的值帶入 {"category_main":$info_to_send} 將無法運作 
 			$.post('../crud/data_filtered.php', jQuery.parseJSON($info_to_send), function(data, textStatus, xhr) {
-					console.log(data);
 					place_data($structure,$where_to_place,data);
 			});
 		}
 	}
 
+	// 建立可塞選的模板產生器，用於點擊不同分類時 篩選基準category_main、sub
+	var Call_AJAX_place_photo = function($info_to_send,$where_to_place,$structure){
+			$.post('../crud/default_img.php', $info_to_send, function(data, textStatus, xhr) {
+					place_data($structure,$where_to_place,data);
+			});
+
+	}
 	// 載入個頁面 Load specified page on click 
 	// $after_load : load 後要執行的程式
 	var Page_loader = function(e,$page_to_load,$after_load){
@@ -92,9 +97,8 @@ jQuery(document).ready(function($) {
 		var mainCat = $(this).parent().data('maincat');
 		var subCat = $(this).parent().data('subcat');
 		var subCat = Category_translate(subCat);
-		var id = $(this).parent().data('id');
+		id = $(this).parent().data('id');
 
-		console.log(subCat);
 		Page_loader(e,"product/Product_detail.php",function(e){
 			// Do after_load
 			// Chane Breadcrumbs 
@@ -102,7 +106,7 @@ jQuery(document).ready(function($) {
 			$('.breadcrumb').find('li:eq(1)').text(mainCat);
 			$('.breadcrumb').find('li:eq(2)').text(subCat);
 			$('.breadcrumb').find('li:eq(3)').text(title);
-			 Call_AJAX_place_data(this,'{"id":id,"mode":"3"}','.test','#product-default_photos');
+			 Call_AJAX_place_photo('{id:id}','.test','#product-default_photos');
 		});
 	});
 

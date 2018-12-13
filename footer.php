@@ -107,7 +107,22 @@
         </div>
     </div>
 </script>
-
+<script id="product_default_photos" type="text/x-handlebars-template">
+              <div class="col-md-8 img-portfolio right">
+                  <p>
+                     <img class="img-responsive" src="{{inner_photo1}}" width="760" height="910" alt=""/>
+                  </p>
+                  <p>
+                     <img class="img-responsive" src="{{inner_photo2}}" width="760" height="910" alt=""/>
+                  </p>
+                  <p>
+                      <img class="img-responsive" src="{{inner_photo3}}" width="760" height="910" alt=""/>
+                  </p>
+                  <p>
+                    <img class="img-responsive" src="{{inner_photo4}}" width="760" height="910" alt=""/>
+                  </p>
+              </div>
+           </script>
 <!-- jQuery -->
     <script src="js/jquery.js"></script>
 

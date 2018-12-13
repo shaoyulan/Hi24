@@ -10,14 +10,13 @@ try{
 
 
 // command SQL 
-$sql ='SELECT * FROM `product_default_photos` WHERE `id`=:id ORDER BY `id` ASC';
+$sql ='SELECT * FROM `product_default_photos` WHERE `id`=1 ORDER BY `id` ASC';
 $statement = $pdo->prepare($sql);
-$statement->bindValue(':id',$_POST['id']); 
-
+// $statement->bindValue(':id',$_POST['id']); 
 
 
 $statement->execute();
 $product_default_photos = $statement->fetchAll(PDO::FETCH_ASSOC); 
-echo json_encode($product_filtered,JSON_NUMERIC_CHECK);
-?>
+echo json_encode($product_default_photos,JSON_NUMERIC_CHECK);
+
 

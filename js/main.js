@@ -14,22 +14,21 @@ jQuery(document).ready(function($) {
 	};
 
 	// 建立可塞選的模板產生器，用於點擊不同分類時 篩選基準category_main、sub
-	var Call_AJAX_place_data = function($clicked_target,$info_to_send,$where_to_place,$structure){
+	var Call_AJAX_place_data = function($info_to_send,$where_to_place,$structure){
 		//判斷裡面是否為空，為空則抓取資料
 		if ($($where_to_place).find('.col-md-3').length == 0){
 			// 轉換為json object
 			// var before_parse = '{"category_main":'+$info_to_send+'}'; 
 			//直接將 $info_to_send的值帶入 {"category_main":$info_to_send} 將無法運作 
-			$.post('../crud/data_filtered.php', jQuery.parseJSON($info_to_send), function(data, textStatus, xhr) {
+			$.post('../crud/data_filtered.php', $info_to_send, function(data, textStatus, xhr) {
 					place_data($structure,$where_to_place,data);
 			});
 		}
 	}
 
 	// 建立可塞選的模板產生器，用於點擊不同分類時 篩選基準category_main、sub
-	var Call_AJAX_place_photo = function($clicked_target,$info_to_send,$where_to_place,$structure){
-			$.post('../crud/default_img.php', jQuery.parseJSON($info_to_send), function(data, textStatus, xhr) {
-					console.log(data);
+	var Call_AJAX_place_photo = function($info_to_send,$where_to_place,$structure){
+			$.post('../crud/default_img.php', $info_to_send, function(data, textStatus, xhr) {
 					place_data($structure,$where_to_place,data);
 			});
 
@@ -75,7 +74,7 @@ jQuery(document).ready(function($) {
 	$('a[href="product/product.html"]').on('click',function(e){
 		Page_loader(e,"product/product.php",function(e){
 			// Do after_load
-			Call_AJAX_place_data(this,'{"category_main":"women"}','.product .row:eq(1)','#product-list-template-model');
+			Call_AJAX_place_data({category_main:"women"},'.product .row:eq(1)','#product-list-template-model');
 		});
 	});
 
@@ -83,7 +82,7 @@ jQuery(document).ready(function($) {
 	$('a[href="product/product_paging.html"]').on('click',function(e){
 		Page_loader(e,"product/product_paging.php",function(e){
 			// Do after_load
-			Call_AJAX_place_data(this,'{"category_main":"women","category_sub":"upper","mode":"2"}','.product_paging .service-two','#product-list-template');
+			Call_AJAX_place_data({category_main:"women",category_sub:"upper",mode:"2"},'.product_paging .service-two','#product-list-template');
 		});
 	});
 
@@ -98,9 +97,8 @@ jQuery(document).ready(function($) {
 		var mainCat = $(this).parent().data('maincat');
 		var subCat = $(this).parent().data('subcat');
 		var subCat = Category_translate(subCat);
-		var id = $(this).parent().data('id');
+		id = $(this).parent().data('id');
 
-		console.log(subCat);
 		Page_loader(e,"product/Product_detail.php",function(e){
 			// Do after_load
 			// Chane Breadcrumbs 
@@ -108,7 +106,7 @@ jQuery(document).ready(function($) {
 			$('.breadcrumb').find('li:eq(1)').text(mainCat);
 			$('.breadcrumb').find('li:eq(2)').text(subCat);
 			$('.breadcrumb').find('li:eq(3)').text(title);
-			 Call_AJAX_place_photo(e.currentTarget,'{"id":id,"mode":"3"}','.test','#product-default_photos');
+			 Call_AJAX_place_photo({id:id},'.test','#product_default_photos');
 		});
 	});
 
@@ -117,9 +115,9 @@ jQuery(document).ready(function($) {
 	// 放置不分類商品place Content products -- Category ALL
 	place_data('#product-list-template-model','#service-one .row',products);
 	// 點擊分類後顯示商品分頁 place content products -- Category Women
-	$('a[href="#service-two"]').on('click',Call_AJAX_place_data(this,'{"category_main":"women"}','#service-two .row','#product-list-template-model'));
-	$('a[href="#service-three"]').on('click',Call_AJAX_place_data(this,'{"category_main":"men"}','#service-three .row','#product-list-template-model'));
-	$('a[href="#service-four"]').on('click',Call_AJAX_place_data(this,'{"category_main":"kid"}','#service-four .row','#product-list-template-model'));
+	$('a[href="#service-two"]').on('click',Call_AJAX_place_data({category_main:"women"},'#service-two .row','#product-list-template-model'));
+	$('a[href="#service-three"]').on('click',Call_AJAX_place_data({category_main:"men"},'#service-three .row','#product-list-template-model'));
+	$('a[href="#service-four"]').on('click',Call_AJAX_place_data({category_main:"kid"},'#service-four .row','#product-list-template-model'));
 
 
 	// Cart number counter

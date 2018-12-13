@@ -118,7 +118,7 @@ function MM_swapImage() { //v3.0
          
          <!--商品說明 -->
          <div class="row test">
-            <script id="product-default_photos" type="text/x-handlebars-template">
+            <script id="product_default_photos" type="text/x-handlebars-template">
               <div class="col-md-8 img-portfolio right">
                   <p>
                      <img class="img-responsive" src="{{inner_photo1}}" width="760" height="910" alt=""/>
