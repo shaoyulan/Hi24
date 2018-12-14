@@ -64,7 +64,7 @@
                         <a href="product/product.html" class="dropdown-toggle" data-toggle="dropdown">WOMEN <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="product/product_paging.html">上衣類</a>
+                                <a href="product/product_paging.php">上衣類</a>
                             </li>
                             <li>
                                 <a href="#">襯衫類</a>

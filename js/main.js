@@ -1,5 +1,6 @@
 jQuery(document).ready(function($) {
 //default set up
+	
 
 	//建立模板產生、放置器 fill template function
 	var place_data = function($structure,$target,$data){
@@ -76,8 +77,11 @@ jQuery(document).ready(function($) {
 	});
 
 	// 各頁點擊載入--Women下方分頁區塊-- -- WOMEN -- Upper
-	$('a[href="product/product_paging.html"]').on('click',function(e){
-		Page_loader(e,"product/product_paging.php",function(e){
+	$('a[href="product/product_paging.php"]').on('click',function(e){
+		var url = this.href; 
+		console.log(
+		); //url = http://localhost:8888/product/product_paging.php
+		Page_loader(e,url,function(e){
 			// Do after_load
 			Call_AJAX_place_data({category_main:"women",category_sub:"upper",mode:"2"},'.product_paging .service-two','#product-list-template');
 		});
