@@ -22,6 +22,10 @@ function MM_swapImage() { //v3.0
 }
     </script>
 
+<!-- body onLoad原始碼 -->
+<!-- <body onLoad="MM_preloadImages('../images/women/sweater/sw001a.jpg','../images/women/sweater/sw001b.jpg','../images/women/sweater/sw001c.jpg','../images/women/sweater/sw001d.jpg')"> -->
+<!-- END -->
+
 <body onLoad="MM_preloadImages('../images/women/sweater/sw001a.jpg','../images/women/sweater/sw001b.jpg','../images/women/sweater/sw001c.jpg','../images/women/sweater/sw001d.jpg')">
  
 	
@@ -53,6 +57,7 @@ function MM_swapImage() { //v3.0
           <div class="row">
           <div class="col-md-6">
                     <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                        <!-- 左邊main item photo -->
                         <img class="img-responsive" src="../images/women/sweater/sw001a.jpg" alt="" id="photo">
                     </div>
             </div>
@@ -74,7 +79,6 @@ function MM_swapImage() { //v3.0
                     </p>
                     <p class="clear"></p>
                      <hr>
-                  <div class="p_color">
                   <a href="#">
                     <img src="../images/women/sweater/sw001ai-1.jpg" class="active" alt="" onMouseOver="MM_swapImage('photo','','../images/women/sweater/sw001a.jpg',1)" onMouseOut="MM_swapImgRestore()">
                   </a>

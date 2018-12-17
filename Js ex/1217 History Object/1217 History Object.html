@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>1217 History Object</title>
+	<style>
+		body{
+			background:lightgray;
+		}
+		.change-title,.change-title2{
+			background:lightblue;
+		}
+		.change-title:hover,.change-title2:hover{
+			cursor:pointer;
+		}
+		.change-title.clicked{
+			background: lightgreen;
+		}
+	</style>
+	<!-- jQuery -->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+	<!-- jQuery ScrollTo Plugin -->
+	<script src="http://balupton.github.io/jquery-scrollto/lib/jquery-scrollto.js"></script>
+
+	History.js
+	<script src="http://browserstate.github.io/history.js/scripts/bundled/html4+html5/jquery.history.js"></script>
+
+	<!-- Ajaxify -->
+	<script src="http://rawgithub.com/browserstate/ajaxify/master/ajaxify-html5.js"></script>
+	<script>
+		$(document).ready(function(e){
+			$('.change-title').click(function(e){
+				window.history.pushState('1','change-title','#');
+				var currentState = history.state;
+				console.log(currentState);
+				$(this).addClass('clicked');
+			});
+			$('.change-title2').click(function(e){
+				window.history.pushState('2','change-title2','#');
+				var currentState = history.state;
+				console.log(currentState);
+				var pathname = location.pathname;
+				console.log(pathname);
+			});
+			
+		});
+	</script>
+</head>
+<body>
+	<div class="change-title">
+		Change Title Click Me
+	</div>
+	<div class="change-title2">
+		Change Title Click Me
+	</div>
+</body>
+</html>

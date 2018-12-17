@@ -24,13 +24,6 @@ jQuery(document).ready(function($) {
 		}
 	}
 
-	// 建立可塞選的模板產生器，用於點擊不同分類時 篩選基準category_main、sub
-	var Call_AJAX_place_photo = function($info_to_send,$where_to_place,$structure){
-			$.post('../crud/default_img.php', $info_to_send, function(data, textStatus, xhr) {
-					place_data($structure,$where_to_place,data);
-			});
-
-	}
 	// 載入個頁面 Load specified page on click 
 	// $after_load : load 後要執行的程式
 	var Page_loader = function(e,$page_to_load,$after_load){
@@ -89,7 +82,7 @@ jQuery(document).ready(function($) {
 
 	
 
-	// 單項商品點擊載入 - -- ALL
+	// 商品詳細頁點擊載入 - -- ALL
 	$('.row').on('click','a[href="product/Product_detail.html"]',function(e){
 
 		e.stopPropagation();
@@ -104,12 +97,28 @@ jQuery(document).ready(function($) {
 			// Do after_load
 			// Chane Breadcrumbs 
 			//**************IMPORTANT : Propagation !!******************
-			$('.breadcrumb').find('li:eq(1)').text(mainCat);
+			$('.breadcrumb').find('li:eq(1)').text(mainCat); 
 			$('.breadcrumb').find('li:eq(2)').text(subCat);
 			$('.breadcrumb').find('li:eq(3)').text(title);
-			 Call_AJAX_place_photo({id:id},'.test','#product_default_photos');
+			 Call_AJAX_place_data({id:id,mode:'product_detail'},'.test','#product_default_photos');
+			// 載入替換的四張照片
+			
+			// 載入右邊區塊
+			  // 將title	改為第一件的
+			  // 將商品編號改為第一件的
+			  // 依第一件item id 修改size 區塊 
+			 // console.log
 		});
 	});
+
+	// 商品詳細頁各項功能
+	 //顏色區塊hover時
+	   //更換照片
+	   //更換title
+	   //更換item id
+	 // 大小區塊點擊後
+	    //更換title
+	    //更換item id
 
 	// 放置Bbanner廣告 place Banner carousel
 	place_data('#header-slider-template','.carousel-inner',headerAds);

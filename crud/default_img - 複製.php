@@ -10,9 +10,9 @@ try{
 
 
 // command SQL 
-$sql ='SELECT * FROM `product_default_photos` WHERE `id`=:id ORDER BY `id` ASC';
+$sql ='SELECT * FROM `product_default_photos` WHERE `id`=1 ORDER BY `id` ASC';
 $statement = $pdo->prepare($sql);
-$statement->bindValue(':id',$_POST['id']); 
+// $statement->bindValue(':id',$_POST['id']); 
 
 
 $statement->execute();
