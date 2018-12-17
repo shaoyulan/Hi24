@@ -21,7 +21,11 @@ if ($_POST['mode']=='2'){
 	$sql ='SELECT * FROM `product_default_photos` WHERE `id`=:id ORDER BY `id` ASC';
 	$statement = $pdo->prepare($sql);
 	$statement->bindValue(':id',$_POST['id']); 
-	
+}elseif ($_POST['mode']=='product_item_detail') {
+	// command SQL 
+	$sql ='SELECT * FROM `product_item_detail` WHERE `product_list_ref`=:id ORDER BY `id` ASC';
+	$statement = $pdo->prepare($sql);
+	$statement->bindValue(':id',$_POST['id']);
 }else{
 	// command SQL 
 	$sql ='SELECT * FROM `product_list` WHERE `category_main`=:category_main ORDER BY `id` ASC';

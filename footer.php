@@ -108,6 +108,13 @@
     </div>
 </script>
 
+<!-- prodcut detail page -->
+<script id="product_main_photos" type="text/x-handlebars-template">
+    <a href="#" data-id="{{id}}"" data-title="{{title}}" data-size="{{size}}" data-item_id="{{item_id}}">
+      <img src="{{color}}" alt="" onMouseOver="MM_swapImage('photo','','{{main_photo_substitute}}',1)" onMouseOut="MM_swapImgRestore()">
+    </a>
+</script>
+
 <script id="product_default_photos" type="text/x-handlebars-template">
               <div class="col-md-8 img-portfolio right">
                   <p>
