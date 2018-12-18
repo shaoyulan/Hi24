@@ -68,7 +68,7 @@ function MM_swapImage() { //v3.0
                       <span id="icolor" color="01">麻花卡其</span> 
                       <span id="isize">-S</span>）
                     </h3>
-                    <p class="left">商品編號：<span id="isn">37447011</span></p>
+                    <p class="left" >商品編號：<span id="isn">37447011</span></p>
                     <p class="p_price_midline right">590</p>
                     <p class="clear"></p>
                     <p class="p_price_color right">
@@ -79,19 +79,11 @@ function MM_swapImage() { //v3.0
                     </p>
                     <p class="clear"></p>
                      <hr>
-                  <a href="#">
-                    <img src="../images/women/sweater/sw001ai-1.jpg" class="active" alt="" onMouseOver="MM_swapImage('photo','','../images/women/sweater/sw001a.jpg',1)" onMouseOut="MM_swapImgRestore()">
-                  </a>
-                    <a href="#">
-                      <img src="../images/women/sweater/sw001ai-2.jpg" alt="" onMouseOver="MM_swapImage('photo','','../images/women/sweater/sw001b.jpg',1)" onMouseOut="MM_swapImgRestore()">
-                    </a>
-                    <a href="#">
-                      <img src="../images/women/sweater/sw001ai-3.jpg" alt="" onMouseOver="MM_swapImage('photo','','../images/women/sweater/sw001c.jpg',1)" onMouseOut="MM_swapImgRestore()">
-                    </a>
-                    <a href="#">
-                      <img src="../images/women/sweater/sw001ai-4.jpg" alt="" onMouseOver="MM_swapImage('photo','','../images/women/sweater/sw001d.jpg',1)" onMouseOut="MM_swapImgRestore()">
-                    </a> 
-                  </div>
+                     <div class="p_color">
+                       <!-- color-box will be here -->
+                      </div>
+
+                  
                   <div>
                     <a href="#"  class="p_size">S</a>
                   </div>
@@ -117,6 +109,7 @@ function MM_swapImage() { //v3.0
                    <p class="clear"></p>
                   <div class="color-r">超商取貨付款．滿千免運</div>
                 </div>
+
           </div>           
          <!-- /.商品內頁/WOMEN_row -->
          

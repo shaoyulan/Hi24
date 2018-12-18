@@ -1,6 +1,5 @@
 jQuery(document).ready(function($) {
 //default set up
-	
 
 	//建立模板產生、放置器 fill template function
 	var place_data = function($structure,$target,$data){
@@ -100,14 +99,24 @@ jQuery(document).ready(function($) {
 			$('.breadcrumb').find('li:eq(1)').text(mainCat); 
 			$('.breadcrumb').find('li:eq(2)').text(subCat);
 			$('.breadcrumb').find('li:eq(3)').text(title);
-			 Call_AJAX_place_data({id:id,mode:'product_detail'},'.test','#product_default_photos');
-			// 載入替換的四張照片
-			
-			// 載入右邊區塊
-			  // 將title	改為第一件的
-			  // 將商品編號改為第一件的
-			  // 依第一件item id 修改size 區塊 
-			 // console.log
+			Call_AJAX_place_data({id:id,mode:'product_detail'},'.test','#product_default_photos');
+			// 載入替換的四張照片、對應色塊
+			Call_AJAX_place_data({id:id,mode:'product_item_detail'},'.product_detail .p_color','#product_main_photos');
+			// 將第一張設為active
+			$(document).ajaxComplete(function(event, xhr, settings) {
+				/* executes whenever an AJAX request completes */
+				$('.product_detail .p_color').find('a:eq(0) img').addClass('active');
+				// 載入右邊區塊
+				  // 將title	改為第一件的
+				  var title = $('.product_detail .p_color').find('a:eq(3)').data('title');
+				  $('#icolor').text(title);
+				  // 將商品編號改為第一件的
+				  var id = $('.product_detail .p_color').find('a:eq(3)').data('id');
+				  $('#isn').text(id);
+				  // 依第一件item id 修改size 區塊 
+				  
+				 // console.log
+			});
 		});
 	});
 
