@@ -40,11 +40,25 @@
 	opacity: 1;
 	transition: all 5s;
 }
+
 .hide.show-up-info{
 	opacity: 0;
 	transition: all 5s;
 }
-
-.product_detail .p_size .active{
-    background: red;
+.product_detail .p_size{
+    color:#c4c4c4;
 }
+.product_detail .p_size:hover{
+    cursor:no-drop;
+}
+.product_detail .p_size.avalible{
+    background-color: #ddd;
+    cursor: pointer;
+    color:black;
+}
+.product_detail .p_size.active{
+    background: red;
+    cursor: pointer;
+    color:black;
+}
+

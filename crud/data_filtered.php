@@ -21,16 +21,25 @@ if ($_POST['mode']=='2'){
 	$sql ='SELECT * FROM `product_default_photos` WHERE `id`=:id ORDER BY `id` ASC';
 	$statement = $pdo->prepare($sql);
 	$statement->bindValue(':id',$_POST['id']); 
+
 }elseif ($_POST['mode']=='product_item_detail') {
 	// command SQL  
 	$sql ='SELECT DISTINCT `color`,`title`,`main_photo_substitute` FROM `product_item_detail` WHERE `product_list_ref`=:id ORDER BY `id` ASC';
 	$statement = $pdo->prepare($sql);
 	$statement->bindValue(':id',$_POST['id']);
+
 }elseif ($_POST['mode']=='product_item_detail_size') {
 	// 
 	$sql ='SELECT DISTINCT `size` FROM `product_item_detail` WHERE `title`=:title ORDER BY `size` ASC';
 	$statement = $pdo->prepare($sql);
 	$statement->bindValue(':title',$_POST['title']);
+
+}elseif ($_POST['mode']=='product_item_detail_id') {
+	$sql ='SELECT `item_id` FROM `product_item_detail` WHERE `title`=:title AND `size`=:size';
+	$statement = $pdo->prepare($sql);
+	$statement->bindValue(':title',$_POST['title']);
+	$statement->bindValue(':size',$_POST['size']);
+
 }else{
 	// command SQL 
 	$sql ='SELECT * FROM `product_list` WHERE `category_main`=:category_main ORDER BY `id` ASC';
@@ -40,5 +49,6 @@ if ($_POST['mode']=='2'){
 $statement->execute();
 $data_filtered = $statement->fetchAll(PDO::FETCH_ASSOC); 
 echo json_encode($data_filtered,JSON_NUMERIC_CHECK);
+
 ?>
 
