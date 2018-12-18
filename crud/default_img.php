@@ -1,8 +1,9 @@
 <?php 
 header('Content-Type: application/json;charset=utf8'); 
+include('../DB.php');
 // DB object
 try{
-	$pdo = new PDO('mysql:host=localhost;dbname=hi24;port=8889;charset=utf8','root','root');
+	$pdo = new PDO("mysql:host={$in[ht]};dbname={$in[dn]};port={$in[pt]};charset={$in[ct]}","{$in[un]}","{$in[pd]}");
 }catch(PDOException $e){
 	echo "Database connection failedsss.";
 	exit;

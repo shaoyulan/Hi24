@@ -18,7 +18,7 @@ jQuery(document).ready(function($) {
 		if ($($where_to_place).find('.col-md-3').length == 0){
 			$.ajax({
 				type:'POST', //必填
-				url:'../crud/data_filtered.php',
+				url:'crud/dataFiltered.php',
 				dataType:'json',
 				data:$info_to_send,
 				success:function(data){
@@ -31,7 +31,7 @@ jQuery(document).ready(function($) {
 				}
 
 			});
-			// $.post('../crud/data_filtered.php', $info_to_send, function(data, textStatus, xhr) {
+			// $.post('crud/data_filtered.php', $info_to_send, function(data, textStatus, xhr) {
 			// 		place_data($structure,$where_to_place,data);
 			// 		if($func){
 			// 			$func();
@@ -82,7 +82,7 @@ jQuery(document).ready(function($) {
 	var get_item_id = function($title,$size,$func){
 		$.ajax({
 			type:'POST', //必填
-			url:'../crud/data_filtered.php',
+			url:'crud/dataFiltered.php',
 			dataType:'json',
 			data:{title:$title,size:$size,mode:'product_item_detail_id'},
 			success:function(data){
@@ -115,7 +115,7 @@ jQuery(document).ready(function($) {
 
 
 		  // 設定衣服Size avalible status (現有庫存)
-		  $.post('../crud/data_filtered.php', {title:title,mode:"product_item_detail_size"}, function(data, textStatus, xhr) {
+		  $.post('crud/dataFiltered.php', {title:title,mode:"product_item_detail_size"}, function(data, textStatus, xhr) {
 		  		 // 訂定Size狀態
 		  		 $.each(data,function(key,value){
 		  		 	size = value["size"];
@@ -268,7 +268,7 @@ jQuery(document).ready(function($) {
 	$('.login-form').find('.submit').click(function(e){
 		var username = $('.username').text().trim();
 		var password = $('.password').text().trim();
-		$.post('../crud/meber_verify.php', {username: username,password:password}, function(data, textStatus, xhr) {
+		$.post('crud/meberVerify.php', {username: username,password:password}, function(data, textStatus, xhr) {
 			// var ans = jQuery.parseJSON(data);  ps. If the returned data is plain text, use this to transfer it to jason objet
 			if (data.verify == '錯誤的帳號或密碼'){
 				$('.login').html('<span style="color:red">'+data.verify+'!</span>');
