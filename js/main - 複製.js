@@ -14,25 +14,15 @@ jQuery(document).ready(function($) {
 	};
 
 	// 建立可塞選的模板產生器，用於點擊不同分類時 篩選基準category_main、sub
-	var Call_AJAX_place_data = function($clicked_target,$info_to_send,$where_to_place,$structure){
+	var Call_AJAX_place_data = function($info_to_send,$where_to_place,$structure){
 		//判斷裡面是否為空，為空則抓取資料
 		if ($($where_to_place).find('.col-md-3').length == 0){
-			// 轉換為json object
-			// var before_parse = '{"category_main":'+$info_to_send+'}'; 
-			//直接將 $info_to_send的值帶入 {"category_main":$info_to_send} 將無法運作 
-			$.post('../crud/data_filtered.php', jQuery.parseJSON($info_to_send), function(data, textStatus, xhr) {
+			$.post('../crud/data_filtered.php', $info_to_send, function(data, textStatus, xhr) {
 					place_data($structure,$where_to_place,data);
 			});
 		}
 	}
 
-	// 建立可塞選的模板產生器，用於點擊不同分類時 篩選基準category_main、sub
-	var Call_AJAX_place_photo = function($info_to_send,$where_to_place,$structure){
-			$.post('../crud/default_img.php', $info_to_send, function(data, textStatus, xhr) {
-					place_data($structure,$where_to_place,data);
-			});
-
-	}
 	// 載入個頁面 Load specified page on click 
 	// $after_load : load 後要執行的程式
 	var Page_loader = function(e,$page_to_load,$after_load){
@@ -74,21 +64,24 @@ jQuery(document).ready(function($) {
 	$('a[href="product/product.html"]').on('click',function(e){
 		Page_loader(e,"product/product.php",function(e){
 			// Do after_load
-			Call_AJAX_place_data(this,'{"category_main":"women"}','.product .row:eq(1)','#product-list-template-model');
+			Call_AJAX_place_data({category_main:"women"},'.product .row:eq(1)','#product-list-template-model');
 		});
 	});
 
 	// 各頁點擊載入--Women下方分頁區塊-- -- WOMEN -- Upper
-	$('a[href="product/product_paging.html"]').on('click',function(e){
-		Page_loader(e,"product/product_paging.php",function(e){
+	$('a[href="product/product_paging.php"]').on('click',function(e){
+		var url = this.href; 
+		console.log(
+		); //url = http://localhost:8888/product/product_paging.php
+		Page_loader(e,url,function(e){
 			// Do after_load
-			Call_AJAX_place_data(this,'{"category_main":"women","category_sub":"upper","mode":"2"}','.product_paging .service-two','#product-list-template');
+			Call_AJAX_place_data({category_main:"women",category_sub:"upper",mode:"2"},'.product_paging .service-two','#product-list-template');
 		});
 	});
 
 	
 
-	// 單項商品點擊載入 - -- ALL
+	// 商品詳細頁點擊載入 - -- ALL
 	$('.row').on('click','a[href="product/Product_detail.html"]',function(e){
 
 		e.stopPropagation();
@@ -103,21 +96,47 @@ jQuery(document).ready(function($) {
 			// Do after_load
 			// Chane Breadcrumbs 
 			//**************IMPORTANT : Propagation !!******************
-			$('.breadcrumb').find('li:eq(1)').text(mainCat);
+			$('.breadcrumb').find('li:eq(1)').text(mainCat); 
 			$('.breadcrumb').find('li:eq(2)').text(subCat);
 			$('.breadcrumb').find('li:eq(3)').text(title);
-			 Call_AJAX_place_photo('{id:id}','.test','#product-default_photos');
+			Call_AJAX_place_data({id:id,mode:'product_detail'},'.test','#product_default_photos');
+			// 載入替換的四張照片、對應色塊
+			Call_AJAX_place_data({id:id,mode:'product_item_detail'},'.product_detail .p_color','#product_main_photos');
+			// 將第一張設為active
+			$(document).ajaxComplete(function(event, xhr, settings) {
+				/* executes whenever an AJAX request completes */
+				$('.product_detail .p_color').find('a:eq(0) img').addClass('active');
+				// 載入右邊區塊
+				  // 將title	改為第一件的
+				  var title = $('.product_detail .p_color').find('a:eq(3)').data('title');
+				  $('#icolor').text(title);
+				  // 將商品編號改為第一件的
+				  var id = $('.product_detail .p_color').find('a:eq(3)').data('id');
+				  $('#isn').text(id);
+				  // 依第一件item id 修改size 區塊 
+				  
+				 // console.log
+			});
 		});
 	});
+
+	// 商品詳細頁各項功能
+	 //顏色區塊hover時
+	   //更換照片
+	   //更換title
+	   //更換item id
+	 // 大小區塊點擊後
+	    //更換title
+	    //更換item id
 
 	// 放置Bbanner廣告 place Banner carousel
 	place_data('#header-slider-template','.carousel-inner',headerAds);
 	// 放置不分類商品place Content products -- Category ALL
 	place_data('#product-list-template-model','#service-one .row',products);
 	// 點擊分類後顯示商品分頁 place content products -- Category Women
-	$('a[href="#service-two"]').on('click',Call_AJAX_place_data(this,'{"category_main":"women"}','#service-two .row','#product-list-template-model'));
-	$('a[href="#service-three"]').on('click',Call_AJAX_place_data(this,'{"category_main":"men"}','#service-three .row','#product-list-template-model'));
-	$('a[href="#service-four"]').on('click',Call_AJAX_place_data(this,'{"category_main":"kid"}','#service-four .row','#product-list-template-model'));
+	$('a[href="#service-two"]').on('click',Call_AJAX_place_data({category_main:"women"},'#service-two .row','#product-list-template-model'));
+	$('a[href="#service-three"]').on('click',Call_AJAX_place_data({category_main:"men"},'#service-three .row','#product-list-template-model'));
+	$('a[href="#service-four"]').on('click',Call_AJAX_place_data({category_main:"kid"},'#service-four .row','#product-list-template-model'));
 
 
 	// Cart number counter

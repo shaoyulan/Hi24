@@ -65,7 +65,7 @@ function MM_swapImage() { //v3.0
                 <div class="col-md-6">
                     <h3>
                       棉質編織圓領毛衣-女（ 
-                      <span id="icolor" color="01">麻花卡其</span> 
+                      <span id="icolor" color="01"></span> 
                       <span id="isize">-S</span>）
                     </h3>
                     <p class="left" >商品編號：<span id="isn">37447011</span></p>

@@ -14,12 +14,30 @@ jQuery(document).ready(function($) {
 	};
 
 	// 建立可塞選的模板產生器，用於點擊不同分類時 篩選基準category_main、sub
-	var Call_AJAX_place_data = function($info_to_send,$where_to_place,$structure){
+	var Call_AJAX_place_data = function($info_to_send,$where_to_place,$structure,$func){
 		//判斷裡面是否為空，為空則抓取資料
 		if ($($where_to_place).find('.col-md-3').length == 0){
-			$.post('../crud/data_filtered.php', $info_to_send, function(data, textStatus, xhr) {
+			$.ajax({
+				type:'POST', //必填
+				url:'../crud/data_filtered.php',
+				dataType:'json',
+				data:$info_to_send,
+				success:function(data){
 					place_data($structure,$where_to_place,data);
+				},
+				complete:function(){
+					if($func){
+						$func();
+					}
+				}
+
 			});
+			// $.post('../crud/data_filtered.php', $info_to_send, function(data, textStatus, xhr) {
+			// 		place_data($structure,$where_to_place,data);
+			// 		if($func){
+			// 			$func();
+			// 		}
+			// });
 		}
 	}
 
@@ -59,6 +77,34 @@ jQuery(document).ready(function($) {
 		}
 		return Cat;
 	}
+
+
+	//預先定義  載入Prodcut_detail 後 稍後要執行的fuction
+	function prodcut_detail_func($vars){
+		
+		// 將第一張設為active
+		$('.product_detail .p_color').find('a:eq(0) img').addClass('active');
+		
+		// 載入右邊區塊
+		  // 將title	改為第一件的
+		  var title = $('.product_detail .p_color').find('a:eq(0)').data('title');
+		  $('#icolor').text(title);
+
+
+		  // 設定對應的size
+		  $.post('../crud/data_filtered.php', {title:title,mode:"product_item_detail_size"}, function(data, textStatus, xhr) {
+		  		 $.each(data,function(key,value){
+		  		 	var size = value["size"];
+		  		 	$(".product_detail .p_size:contains(size)").addClass('active');
+		  		 });
+		  		 // console.log(data[0]["size"]);
+		  });
+
+		  // 將商品編號改為第一件的
+		  var id = $('.product_detail .p_color').find('a:eq(3)').data('id');
+		  $('#isn').text(id);
+		  // 依第一件item id 修改size 區塊 
+	} 
 
 	// 各頁點擊載入--Women 圖示那張-- -- WOMEN -- All
 	$('a[href="product/product.html"]').on('click',function(e){
@@ -100,23 +146,10 @@ jQuery(document).ready(function($) {
 			$('.breadcrumb').find('li:eq(2)').text(subCat);
 			$('.breadcrumb').find('li:eq(3)').text(title);
 			Call_AJAX_place_data({id:id,mode:'product_detail'},'.test','#product_default_photos');
+
 			// 載入替換的四張照片、對應色塊
-			Call_AJAX_place_data({id:id,mode:'product_item_detail'},'.product_detail .p_color','#product_main_photos');
-			// 將第一張設為active
-			$(document).ajaxComplete(function(event, xhr, settings) {
-				/* executes whenever an AJAX request completes */
-				$('.product_detail .p_color').find('a:eq(0) img').addClass('active');
-				// 載入右邊區塊
-				  // 將title	改為第一件的
-				  var title = $('.product_detail .p_color').find('a:eq(3)').data('title');
-				  $('#icolor').text(title);
-				  // 將商品編號改為第一件的
-				  var id = $('.product_detail .p_color').find('a:eq(3)').data('id');
-				  $('#isn').text(id);
-				  // 依第一件item id 修改size 區塊 
-				  
-				 // console.log
-			});
+			Call_AJAX_place_data({id:id,mode:'product_item_detail'},'.product_detail .p_color','#product_main_photos',prodcut_detail_func);
+			
 		});
 	});
 

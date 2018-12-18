@@ -16,12 +16,16 @@ if ($_POST['mode']=='2'){
 	$statement->bindValue(':category_main',$_POST['category_main']); 
 	$statement->bindValue(':category_sub',$_POST['category_sub']);
 	//should use " cause :category_main in $sql only accept "abc"
-}elseif ($_POST['mode']=='3') {
+}elseif ($_POST['mode']=='product_detail') {
 	// command SQL 
 	$sql ='SELECT * FROM `product_default_photos` WHERE `id`=:id ORDER BY `id` ASC';
 	$statement = $pdo->prepare($sql);
 	$statement->bindValue(':id',$_POST['id']); 
-	
+}elseif ($_POST['mode']=='product_item_detail') {
+	// command SQL  
+	$sql ='SELECT DISTINCT `color`,`title`,`main_photo_substitute` FROM `product_item_detail` WHERE `product_list_ref`=:id ORDER BY `id` ASC';
+	$statement = $pdo->prepare($sql);
+	$statement->bindValue(':id',$_POST['id']);
 }else{
 	// command SQL 
 	$sql ='SELECT * FROM `product_list` WHERE `category_main`=:category_main ORDER BY `id` ASC';
@@ -29,7 +33,7 @@ if ($_POST['mode']=='2'){
 	$statement->bindValue(':category_main',$_POST['category_main']); //should use " cause :category_main in $sql only accept "abc"
 }
 $statement->execute();
-$product_filtered = $statement->fetchAll(PDO::FETCH_ASSOC); 
-echo json_encode($product_filtered,JSON_NUMERIC_CHECK);
+$data_filtered = $statement->fetchAll(PDO::FETCH_ASSOC); 
+echo json_encode($data_filtered,JSON_NUMERIC_CHECK);
 ?>
 
