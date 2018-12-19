@@ -1,6 +1,5 @@
 jQuery(document).ready(function($) {
 //default set up
-
 	//建立模板產生、放置器 fill template function
 	var place_data = function($structure,$target,$data){
 		var html_structure = $($structure).html();
@@ -14,12 +13,30 @@ jQuery(document).ready(function($) {
 	};
 
 	// 建立可塞選的模板產生器，用於點擊不同分類時 篩選基準category_main、sub
-	var Call_AJAX_place_data = function($info_to_send,$where_to_place,$structure){
+	var Call_AJAX_place_data = function($info_to_send,$where_to_place,$structure,$func){
 		//判斷裡面是否為空，為空則抓取資料
 		if ($($where_to_place).find('.col-md-3').length == 0){
-			$.post('../crud/data_filtered.php', $info_to_send, function(data, textStatus, xhr) {
+			$.ajax({
+				type:'POST', //必填
+				url:'../crud/dataFiltered.php',
+				dataType:'json',
+				data:$info_to_send,
+				success:function(data){
 					place_data($structure,$where_to_place,data);
+				},
+				complete:function(){
+					if($func){
+						$func();
+					}
+				}
+
 			});
+			// $.post('../crud/data_filtered.php', $info_to_send, function(data, textStatus, xhr) {
+			// 		place_data($structure,$where_to_place,data);
+			// 		if($func){
+			// 			$func();
+			// 		}
+			// });
 		}
 	}
 
@@ -60,6 +77,61 @@ jQuery(document).ready(function($) {
 		return Cat;
 	}
 
+	//依Color Size抓取ID
+	// AJAX doesn't return value, so $func is optional for use
+	var get_item_id = function($title,$size,$func){
+		$.ajax({
+			type:'POST', //必填
+			url:'../crud/dataFiltered.php',
+			dataType:'json',
+			data:{title:$title,size:$size,mode:'product_item_detail_id'},
+			success:function(data){
+				id = data[0]["item_id"];
+				// optional
+				console.log(id);
+				if(!$func==""){
+					$func(id);
+					console.log(id);
+				}
+			},
+		});
+
+	}
+
+	function change_id(id){
+		$('#isn').text(id);
+	}
+
+	//預先定義  載入Prodcut_detail 後 稍後要執行的fuction
+	function prodcut_detail_func($vars){
+		
+		// 將第一張設為active
+		$('.product_detail .p_color').find('a:eq(0) img').addClass('active');
+		
+		// 載入右邊區塊
+		  // 將title	改為第一件的
+		  var title = $('.product_detail .p_color').find('a:eq(0)').data('title');
+		  $('#icolor').text(title);
+
+
+		  // 設定衣服Size avalible status (現有庫存)
+		  $.post('../crud/dataFiltered.php', {title:title,mode:"product_item_detail_size"}, function(data, textStatus, xhr) {
+		  		 // 訂定Size狀態
+		  		 $.each(data,function(key,value){
+		  		 	size = value["size"];
+		  		 	// :contains only accept text
+		  		 	$(".product_detail .p_size:contains('"+size+"')").addClass('avalible');
+		  		 });
+		  		 // 設定第一個為預設
+		  		 $(".product_detail .p_size:eq(0)").addClass('active');
+		  });
+		  
+     	   // 將商品編號改為第一件的
+		   var size = $('.p_size:eq(0)').text();
+		   var id = get_item_id(title,size,change_id)
+		  // 依第一件item id 修改size 區塊 
+	} 
+
 	// 各頁點擊載入--Women 圖示那張-- -- WOMEN -- All
 	$('a[href="product/product.html"]').on('click',function(e){
 		Page_loader(e,"product/product.php",function(e){
@@ -90,6 +162,8 @@ jQuery(document).ready(function($) {
 		var mainCat = $(this).parent().data('maincat');
 		var subCat = $(this).parent().data('subcat');
 		var subCat = Category_translate(subCat);
+		var price_org = $(this).next().find('.p_price:eq(0)').text();
+		var price_dis = $(this).next().find('.p_prices').text();
 		id = $(this).parent().data('id');
 
 		Page_loader(e,"product/Product_detail.php",function(e){
@@ -99,24 +173,15 @@ jQuery(document).ready(function($) {
 			$('.breadcrumb').find('li:eq(1)').text(mainCat); 
 			$('.breadcrumb').find('li:eq(2)').text(subCat);
 			$('.breadcrumb').find('li:eq(3)').text(title);
-			Call_AJAX_place_data({id:id,mode:'product_detail'},'.test','#product_default_photos');
-			// 載入替換的四張照片、對應色塊
-			Call_AJAX_place_data({id:id,mode:'product_item_detail'},'.product_detail .p_color','#product_main_photos');
-			// 將第一張設為active
-			$(document).ajaxComplete(function(event, xhr, settings) {
-				/* executes whenever an AJAX request completes */
-				$('.product_detail .p_color').find('a:eq(0) img').addClass('active');
-				// 載入右邊區塊
-				  // 將title	改為第一件的
-				  var title = $('.product_detail .p_color').find('a:eq(3)').data('title');
-				  $('#icolor').text(title);
-				  // 將商品編號改為第一件的
-				  var id = $('.product_detail .p_color').find('a:eq(3)').data('id');
-				  $('#isn').text(id);
-				  // 依第一件item id 修改size 區塊 
-				  
-				 // console.log
-			});
+			$('.product_detail .p_price_midline').text(price_org);
+			$('.product_detail .p_price_money').text(price_dis);
+			console.log(price_dis+'dis');
+
+			Call_AJAX_place_data({id:id,mode:'product_detail'},'.photo_places','#product_default_photos');
+
+			// 載入替換的四張照片、設定對應色塊
+			Call_AJAX_place_data({id:id,mode:'product_item_detail'},'.product_detail .p_color','#product_main_photos',prodcut_detail_func);
+			
 		});
 	});
 
@@ -125,9 +190,35 @@ jQuery(document).ready(function($) {
 	   //更換照片
 	   //更換title
 	   //更換item id
-	 // 大小區塊點擊後
-	    //更換title
-	    //更換item id
+	 // 點擊後
+	    //點擊color box 更換ID
+	    $('body').on('click','.product_detail .p_color img',function(e){
+	    	// 更換active 狀態
+	    	e.preventDefault();
+	    	$(this).closest('.p_color').find('img').removeClass('active');
+	    	$(this).addClass('active');
+	    	// 設定目前id
+	    	var title = $('.p_color .active').closest('a').data('title');
+	    	var size = $('.p_size.active').text();
+	    	$('#icolor').text(title);
+	    	var id = get_item_id(title,size,change_id);
+	    	// to send a function name(e.g change_id), you should not make it quoted like "XXX"	
+	    });
+
+	    //點擊Size box 更換ID
+	    $('body').on('click','.product_detail .p_size',function(e){
+	    	// 更換active 狀態
+	    	e.preventDefault();
+	    	$('.p_size.active').removeClass('active');
+	    	$(this).addClass('active');
+	    	// 設定目前id
+	    	var title = $('.p_color .active').closest('a').data('title');
+	    	var size = $('.p_size.active').text();
+	    	$('#isize').text('-'+size);
+	    	var id = get_item_id(title,size,change_id);
+	    	// to send a function name(e.g change_id), you should not make it quoted like "XXX"	
+	    });
+
 
 	// 放置Bbanner廣告 place Banner carousel
 	place_data('#header-slider-template','.carousel-inner',headerAds);
@@ -146,13 +237,19 @@ jQuery(document).ready(function($) {
 		$(this).stop().toggleClass('buy');
 		
 		// show-up info 
-		$('.show-up-info').stop().toggleClass('show');
-		setTimeout(function(e){
-			$('.show-up-info').stop().toggleClass('hide');
-		},2000);
-		setTimeout(function(e){
-			$('.show-up-info').stop().removeClass('show').removeClass('hide');
-		},7000);
+		if($(this).hasClass('buy')){
+			console.log('hasbuy');
+		}
+		$('.show-up-info').stop().fadeIn(1200,function(e){
+			$(this).fadeOut(1200);
+		});
+		// $('.show-up-info').stop().toggleClass('show');
+		// setTimeout(function(e){
+		// 	$('.show-up-info').stop().toggleClass('hide');
+		// },2000);
+		// setTimeout(function(e){
+		// 	$('.show-up-info').stop().removeClass('show').removeClass('hide');
+		// },7000);
 
 		// selected-item price
 		var price = $(this).parent().prev().prev().find('.p_prices').text();
@@ -179,7 +276,7 @@ jQuery(document).ready(function($) {
 	$('.login-form').find('.submit').click(function(e){
 		var username = $('.username').text().trim();
 		var password = $('.password').text().trim();
-		$.post('../crud/meber_verify.php', {username: username,password:password}, function(data, textStatus, xhr) {
+		$.post('../crud/meberVerify.php', {username: username,password:password}, function(data, textStatus, xhr) {
 			// var ans = jQuery.parseJSON(data);  ps. If the returned data is plain text, use this to transfer it to jason objet
 			if (data.verify == '錯誤的帳號或密碼'){
 				$('.login').html('<span style="color:red">'+data.verify+'!</span>');

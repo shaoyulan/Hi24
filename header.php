@@ -30,6 +30,8 @@
  <!-- TOP上方區塊 --> 
  <div class="navbar-frame navbar-fixed-top">
  <div class="container">
+ <div class="show-up-info">商品已選取</div>
+
   <!-- 選單列 -->
  <a class="navbar-brand" href="index.php"><img src="images/in_img/logo.png" width="221" height="89" alt=""/></a>
  <div class="navbar-top navbar-right">
@@ -42,8 +44,8 @@
            <p class="login-info"></p>
            <a href="#"><div class="submit" style="background: #E7141A;color: white;text-align: center;">登入</div></a>
        </div>
-       <div class="cart-total" style="height: 50px;display:none;position:absolute;box-shadow: 0 0 3px lightslategrey;border-radius: 6px;padding: 14px;">
-           目前共6樣商品，共400元
+       <div class="cart-total" style="height: 50px;display:none;position:absolute;box-shadow: 0 0 3px lightslategrey;border-radius: 6px;padding: 14px;    width: 210px;">
+           <span class="item-num"></span><span class="total-price">0</span>
        </div>
      </div>
 </div>
@@ -151,6 +153,7 @@
                         </span>
                     </div>
       </form>
+    
     </div>
     <!-- /.navbar-collapse --> 
   </div>

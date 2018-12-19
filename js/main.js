@@ -18,7 +18,7 @@ jQuery(document).ready(function($) {
 		if ($($where_to_place).find('.col-md-3').length == 0){
 			$.ajax({
 				type:'POST', //必填
-				url:'crud/dataFiltered.php',
+				url:'../crud/dataFiltered.php',
 				dataType:'json',
 				data:$info_to_send,
 				success:function(data){
@@ -31,7 +31,7 @@ jQuery(document).ready(function($) {
 				}
 
 			});
-			// $.post('crud/data_filtered.php', $info_to_send, function(data, textStatus, xhr) {
+			// $.post('../crud/data_filtered.php', $info_to_send, function(data, textStatus, xhr) {
 			// 		place_data($structure,$where_to_place,data);
 			// 		if($func){
 			// 			$func();
@@ -82,7 +82,7 @@ jQuery(document).ready(function($) {
 	var get_item_id = function($title,$size,$func){
 		$.ajax({
 			type:'POST', //必填
-			url:'crud/dataFiltered.php',
+			url:'../crud/dataFiltered.php',
 			dataType:'json',
 			data:{title:$title,size:$size,mode:'product_item_detail_id'},
 			success:function(data){
@@ -115,7 +115,7 @@ jQuery(document).ready(function($) {
 
 
 		  // 設定衣服Size avalible status (現有庫存)
-		  $.post('crud/dataFiltered.php', {title:title,mode:"product_item_detail_size"}, function(data, textStatus, xhr) {
+		  $.post('../crud/dataFiltered.php', {title:title,mode:"product_item_detail_size"}, function(data, textStatus, xhr) {
 		  		 // 訂定Size狀態
 		  		 $.each(data,function(key,value){
 		  		 	size = value["size"];
@@ -155,7 +155,7 @@ jQuery(document).ready(function($) {
 
 	// 商品詳細頁點擊載入 - -- ALL
 	$('.row').on('click','a[href="product/Product_detail.html"]',function(e){
-
+		e.preventDefault();
 		e.stopPropagation();
 		// Breadcrumb bar
 		var title = $(this).parent().data('title');
@@ -165,7 +165,7 @@ jQuery(document).ready(function($) {
 		var price_org = $(this).next().find('.p_price:eq(0)').text();
 		var price_dis = $(this).next().find('.p_prices').text();
 		id = $(this).parent().data('id');
-
+		console.log('once');
 		Page_loader(e,"product/Product_detail.php",function(e){
 			// Do after_load
 			// Chane Breadcrumbs 
@@ -177,7 +177,7 @@ jQuery(document).ready(function($) {
 			$('.product_detail .p_price_money').text(price_dis);
 			console.log(price_dis+'dis');
 
-			Call_AJAX_place_data({id:id,mode:'product_detail'},'.test','#product_default_photos');
+			Call_AJAX_place_data({id:id,mode:'product_detail'},'.photo_places','#product_default_photos');
 
 			// 載入替換的四張照片、設定對應色塊
 			Call_AJAX_place_data({id:id,mode:'product_item_detail'},'.product_detail .p_color','#product_main_photos',prodcut_detail_func);
@@ -200,6 +200,7 @@ jQuery(document).ready(function($) {
 	    	// 設定目前id
 	    	var title = $('.p_color .active').closest('a').data('title');
 	    	var size = $('.p_size.active').text();
+	    	$('#icolor').text(title);
 	    	var id = get_item_id(title,size,change_id);
 	    	// to send a function name(e.g change_id), you should not make it quoted like "XXX"	
 	    });
@@ -213,6 +214,7 @@ jQuery(document).ready(function($) {
 	    	// 設定目前id
 	    	var title = $('.p_color .active').closest('a').data('title');
 	    	var size = $('.p_size.active').text();
+	    	$('#isize').text('-'+size);
 	    	var id = get_item_id(title,size,change_id);
 	    	// to send a function name(e.g change_id), you should not make it quoted like "XXX"	
 	    });
@@ -231,24 +233,42 @@ jQuery(document).ready(function($) {
 	// Cart number counter
 	$('.wraper').on('click','.btn-primary',function(e){
 		e.preventDefault();
-		// set btn to red bgc
-		$(this).stop().toggleClass('buy');
-		
-		// show-up info 
-		$('.show-up-info').stop().toggleClass('show');
-		setTimeout(function(e){
-			$('.show-up-info').stop().toggleClass('hide');
-		},2000);
-		setTimeout(function(e){
-			$('.show-up-info').stop().removeClass('show').removeClass('hide');
-		},7000);
-
-		// selected-item price
-		var price = $(this).parent().prev().prev().find('.p_prices').text();
 		// fetch current number
 		var number = $('.navbar-right').find('.glyphicon').text();
-		// renew total number
-		$('.navbar-right').find('.glyphicon').text(++number);
+		// selected-item price
+		if($('.p_price_money').text()){
+			var price = parseInt($('.p_price_money').text());
+		}else{
+			var price = parseInt($(this).parent().prev().prev().find('.p_prices').text());
+		}
+
+		// show-up info 
+		if($(this).hasClass('buy')){
+			console.log('hasbuy');
+			$('.show-up-info').text('商品已取消')
+			// renew total number
+			$('.navbar-right').find('.glyphicon').text(--number);
+			// cancel order so price = -price
+			price = price - (price*2);
+		}else{
+			$('.show-up-info').text('商品已購買')
+			// renew total number
+			$('.navbar-right').find('.glyphicon').text(++number);
+			// buy so price = price
+		}
+
+		// set btn to red bgc
+		$(this).stop().toggleClass('buy');
+
+		$('.show-up-info').stop().fadeIn(1200,function(e){
+			$(this).fadeOut(1200);
+		});
+
+		// renew total price
+		var total_price = parseInt($('.total-price').text());
+		$('.total-price').text(price+total_price+'元');
+
+
 	});
 
 	// login form -- show form
@@ -268,7 +288,7 @@ jQuery(document).ready(function($) {
 	$('.login-form').find('.submit').click(function(e){
 		var username = $('.username').text().trim();
 		var password = $('.password').text().trim();
-		$.post('crud/meberVerify.php', {username: username,password:password}, function(data, textStatus, xhr) {
+		$.post('../crud/meberVerify.php', {username: username,password:password}, function(data, textStatus, xhr) {
 			// var ans = jQuery.parseJSON(data);  ps. If the returned data is plain text, use this to transfer it to jason objet
 			if (data.verify == '錯誤的帳號或密碼'){
 				$('.login').html('<span style="color:red">'+data.verify+'!</span>');
@@ -293,7 +313,7 @@ jQuery(document).ready(function($) {
 		// after close login fomr, show/hide login form
 		var total = $('.navbar-right').find('.glyphicon').text();
 		var text = '目前有'+total+'樣商品，共';
-		$(this).closest('.navbar-right').find('.cart-total').text(text).stop().slideToggle(400);
+		$(this).closest('.navbar-right').find('.item-num').text(text).stop().parent().slideToggle(400);
 	});
 
 

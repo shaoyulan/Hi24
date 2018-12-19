@@ -30,7 +30,6 @@
 
         <!-- Page Content -->
         <div class="container">
-            
             <!-- 主選單廣告 -->
             <div class="row">
                <div class="col-lg-12">
@@ -118,6 +117,7 @@
 
                 </div>
             </div>  
+        
     </div> <!-- end-of-index -->
 
 </div> <!-- end-of-wrapper -->
@@ -127,6 +127,6 @@
 <!-- 回到最上TOP方 -->
 <div id="scroll-top" style="display: block;"><a href="#"><i class="fa fa-angle-up"></i></a></div>
 </div>
-<div class="show-up-info">商品已選取</div>
+
    
 <?php include('footer.php') ?>

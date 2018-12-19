@@ -26,13 +26,13 @@ function MM_swapImage() { //v3.0
 <!-- <body onLoad="MM_preloadImages('../images/women/sweater/sw001a.jpg','../images/women/sweater/sw001b.jpg','../images/women/sweater/sw001c.jpg','../images/women/sweater/sw001d.jpg')"> -->
 <!-- END -->
 
-<body onLoad="MM_preloadImages('../images/women/sweater/sw001a.jpg','../images/women/sweater/sw001b.jpg','../images/women/sweater/sw001c.jpg','../images/women/sweater/sw001d.jpg')">
+<body onLoad="MM_preloadImages('images/women/sweater/sw001a.jpg','images/women/sweater/sw001b.jpg','images/women/sweater/sw001c.jpg','images/women/sweater/sw001d.jpg')">
  
 	
     <!-- Header Carousel -->
     <header class="page-title-pic"> 
       <!-- Image Title -->
-      <img class="img-responsive" src="../images/all_img/page_title01.jpg" alt="">
+      <img class="img-responsive" src="images/all_img/page_title01.jpg" alt="">
 
     </header>
   <div class="product_detail">
@@ -58,7 +58,7 @@ function MM_swapImage() { //v3.0
           <div class="col-md-6">
                     <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
                         <!-- 左邊main item photo -->
-                        <img class="img-responsive" src="../images/women/sweater/sw001a.jpg" alt="" id="photo">
+                        <img class="img-responsive" src="images/women/sweater/sw001a.jpg" alt="" id="photo">
                     </div>
             </div>
 
@@ -103,7 +103,7 @@ function MM_swapImage() { //v3.0
                    
                   <p class="clear"></p>
                   <hr>
-                  <div>數量　<input type="text"　size="2"></div>
+                  <div>數量　<input type="text"　size="2" class="amount" value="1"></div>
 
                   <p class="right"><a href="#" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> 加入購物車</a></p>
                    <p class="clear"></p>
@@ -115,24 +115,13 @@ function MM_swapImage() { //v3.0
          
          <!--商品說明 -->
          <div class="row test">
-            <script id="product_default_photos" type="text/x-handlebars-template">
-              <div class="col-md-8 img-portfolio right">
-                  <p>
-                     <img class="img-responsive" src="{{inner_photo1}}" width="760" height="910" alt=""/>
-                  </p>
-                  <p>
-                     <img class="img-responsive" src="{{inner_photo2}}" width="760" height="910" alt=""/>
-                  </p>
-                  <p>
-                      <img class="img-responsive" src="{{inner_photo3}}" width="760" height="910" alt=""/>
-                  </p>
-                  <p>
-                    <img class="img-responsive" src="{{inner_photo4}}" width="760" height="910" alt=""/>
-                  </p>
-              </div>
-           </script>
+            
+            <div class="photo_places">
+              
+            </div>
+
            <div class="col-md-4 img-portfolio  p_price_il left">
-              <img class="img-responsive" src="../images/women/sweater/sw001a-5s.jpg" width="500" height="910" alt=""/>
+              <img class="img-responsive" src="images/women/sweater/sw001a-5s.jpg" width="500" height="910" alt=""/>
            </div>
           
          </div><!--/.商品說明_row -->

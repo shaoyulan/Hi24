@@ -2,7 +2,7 @@
         <!-- Header Carousel -->
         <header class="page-title-pic"> 
                 <!-- Image Title -->
-            <img class="img-responsive" src="../images/all_img/page_title01.jpg" alt="">
+            <img class="img-responsive" src="images/all_img/page_title01.jpg" alt="">
                   
 
         </header>
