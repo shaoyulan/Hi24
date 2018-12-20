@@ -1,4 +1,7 @@
 /*override bootstrap*/
+body{
+    overflow-y:scroll;
+}
 .btn.btn-primary{
 	transition: .5s;
 }

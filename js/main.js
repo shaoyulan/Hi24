@@ -37,9 +37,11 @@ jQuery(document).ready(function($) {
 	// 載入個頁面 Load specified page on click 
 	// $after_load : load 後要執行的程式
 	var Page_loader = function(e,$page_to_load,$after_load){
-		$('.wraper>div').css('display','none');
+		$('.footer_bg').css('opacity','0').delay(4000).fadeIn(1000);
+		$('.wraper>div').fadeOut(1000).css('display','none');
 		// :not selector should NOT use quote mark
-		$('.wraper>div:not(.index,#scroll-top)').css('display','block').load($page_to_load,$after_load);
+		// $('.wraper>div:not(.index,#scroll-top)').css('display','block').load($page_to_load,$after_load);
+		$('.wraper>div:not(.index,#scroll-top)').fadeOut(1000).load($page_to_load,$after_load).fadeIn(4000);
 	}
 
 	// 次分類中譯
