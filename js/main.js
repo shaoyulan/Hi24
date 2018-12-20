@@ -31,21 +31,15 @@ jQuery(document).ready(function($) {
 				}
 
 			});
-			// $.post('../crud/data_filtered.php', $info_to_send, function(data, textStatus, xhr) {
-			// 		place_data($structure,$where_to_place,data);
-			// 		if($func){
-			// 			$func();
-			// 		}
-			// });
 		}
 	}
 
 	// 載入個頁面 Load specified page on click 
 	// $after_load : load 後要執行的程式
 	var Page_loader = function(e,$page_to_load,$after_load){
-		e.preventDefault();
 		$('.wraper>div').css('display','none');
-		$('.wraper>div:not(".index")').css('display','block').load($page_to_load,$after_load);
+		// :not selector should NOT use quote mark
+		$('.wraper>div:not(.index,#scroll-top)').css('display','block').load($page_to_load,$after_load);
 	}
 
 	// 次分類中譯
@@ -88,10 +82,8 @@ jQuery(document).ready(function($) {
 			success:function(data){
 				id = data[0]["item_id"];
 				// optional
-				console.log(id);
 				if(!$func==""){
 					$func(id);
-					console.log(id);
 				}
 			},
 		});
@@ -132,6 +124,7 @@ jQuery(document).ready(function($) {
 		  // 依第一件item id 修改size 區塊 
 	} 
 
+
 	// 各頁點擊載入--Women 圖示那張-- -- WOMEN -- All
 	$('a[href="product/product.html"]').on('click',function(e){
 		Page_loader(e,"product/product.php",function(e){
@@ -165,8 +158,8 @@ jQuery(document).ready(function($) {
 		var price_org = $(this).next().find('.p_price:eq(0)').text();
 		var price_dis = $(this).next().find('.p_prices').text();
 		id = $(this).parent().data('id');
-		console.log('once');
 		Page_loader(e,"product/Product_detail.php",function(e){
+
 			// Do after_load
 			// Chane Breadcrumbs 
 			//**************IMPORTANT : Propagation !!******************
@@ -175,7 +168,6 @@ jQuery(document).ready(function($) {
 			$('.breadcrumb').find('li:eq(3)').text(title);
 			$('.product_detail .p_price_midline').text(price_org);
 			$('.product_detail .p_price_money').text(price_dis);
-			console.log(price_dis+'dis');
 
 			Call_AJAX_place_data({id:id,mode:'product_detail'},'.photo_places','#product_default_photos');
 
@@ -195,6 +187,7 @@ jQuery(document).ready(function($) {
 	    $('body').on('click','.product_detail .p_color img',function(e){
 	    	// 更換active 狀態
 	    	e.preventDefault();
+	    	e.stopPropagation();
 	    	$(this).closest('.p_color').find('img').removeClass('active');
 	    	$(this).addClass('active');
 	    	// 設定目前id
@@ -209,6 +202,7 @@ jQuery(document).ready(function($) {
 	    $('body').on('click','.product_detail .p_size',function(e){
 	    	// 更換active 狀態
 	    	e.preventDefault();
+	    	e.stopPropagation();
 	    	$('.p_size.active').removeClass('active');
 	    	$(this).addClass('active');
 	    	// 設定目前id
@@ -271,18 +265,32 @@ jQuery(document).ready(function($) {
 
 	});
 
-	// login form -- show form
+	// login form -- show/hide form
 	$('.login').click(function(e){
 		e.preventDefault();
-		// close shopping cart if exists
-		// see if shopping cart is on display
-		var shopping_cart_stat = $(this).closest('.navbar-right').find('.cart-total').css('display');
-		if(shopping_cart_stat == 'block'){
-			$(this).closest('.navbar-right').find('.cart-total').stop().slideToggle(400);
-		}
-		// after close shopping cart, show/hide login form
-		$(this).closest('.navbar-right').find('.login-form').stop().slideToggle(400);
+		// $(this).closest('.navbar-right').find('.login-form').stop().slideToggle(400);
+		Page_loader(e,"../member/login_register.php");
 	});
+
+	// 選單收合
+	$('body').click(function(e){
+		var container = $('.right');
+		var login = $('.right:eq(1)');
+		var cart = $('.right:eq(0)');
+		//outside target
+		if (e.target != container && container.has(e.target).length===0 ){
+			container.find('.js-toggle').slideUp();
+		}
+		//slidup not clicked target
+		// if (login.has(e.target).length===0){
+		// 	login.find('.js-toggle').slideUp();
+		// }else{
+		// 	cart.find('.js-toggle').slideUp();
+		// }
+	});
+
+	// Hide Menu When lost focus
+	// $('.right .login-form').focusout(function(e){$('.js-toggle').stop().slideUp(400)});
 
 	// login verify
 	$('.login-form').find('.submit').click(function(e){
@@ -301,15 +309,9 @@ jQuery(document).ready(function($) {
 		});
 	});
 
-	// show shopping detail
+	// Shopping cart show/hide
 	$('.navbar-right').find('.right').first().click(function(e){
 		e.preventDefault();
-		// see if login form is on display
-		var login_from_stat = $(this).closest('.navbar-right').find('.login-form').css('display');
-		if(login_from_stat == 'block'){
-			$(this).closest('.navbar-right').find('.login-form').stop().slideToggle(400);
-		}
-
 		// after close login fomr, show/hide login form
 		var total = $('.navbar-right').find('.glyphicon').text();
 		var text = '目前有'+total+'樣商品，共';
@@ -318,6 +320,7 @@ jQuery(document).ready(function($) {
 
 
 // InterFace UI/UX
+	// Scroll-top icon
 	$('#scroll-top').click(function(e){
 		console.log('test');
 		$('body').animate({'scrollTop':0},600);

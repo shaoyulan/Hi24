@@ -1,10 +1,4 @@
 @charset "utf-8";
-.left{
-	float: left;
-}
-.right{
-	float: right;
-}
 .navbar-top{
 	padding: 10px 20px;
 	margin: 10px;
@@ -16,9 +10,6 @@
 }
 .navbar-frame .navbar-brand {
   color: #9d9d9d;
-}
-.navbar-brand img{
-  width:100%;
 }
 .navbar-frame .navbar-brand:hover,
 .navbar-frame .navbar-brand:focus {
@@ -68,71 +59,7 @@
   color: #fff;
   background-color: #ffffff;
 }
-
-/*會員登入註冊*/
-.login_register{
-	width: 250px;
-	text-align: center;
-	color: #666;
-	margin: 70px auto;
-	line-height: 30px;
-}
-.login_register label{
-	color: #ddd;
-}
-.login_register input{
-	border: 0;
-	height: 40px;
-	border-bottom: 1px solid #A4A4A4;
-	z-index: 2;
-	font-family: "微軟正黑體";
-	vertical-align: middle;
-	margin-top: 10px;
-	color: #000000;
-}
-.login_register label{
-	z-index: 1;
-	font-size: 12px;
-	color: #ddd;
-	text-align: center;
-	font-family: "微軟正黑體";
-	margin-top: -5px;
-}
-
-.login_pw {
-	position: absolute;
-	
-	display: inline-block;
-	margin: 0 auto;
-}
-.login_register .button{
-	padding: 0 30px;
-	color: #FFFFFF;
-	height: 35px;
-	margin-top: 20px;
-	width: 250px;
-	background-color: #313131;
-}
-.login_register .button:hover{
-	background-color: #9E9E9E;	
-}
-.login_register .link {
-	color: #646464;
-	line-height: 50px;
-}
-
-.forgetpw{
-	position: relative;
-	float: left;
-	width: 100%;
-}
-
-
 @media (max-width: 767px) {
- .navbar-brand img{
-  width:200px;
-  height:81px;
-  }
   .navbar-frame .navbar-nav .open .dropdown-menu > .dropdown-header {
     border-color: #ffffff;
   }
@@ -315,12 +242,6 @@ footer .logo{
 }
 .page-title-pic{
 	width: 100%;
-	background-color: #595A5F;
-}
-.page-title{
-	padding: 30px 0;
-	color: #FFFFFF;
-	text-align: right;
 }
 
 #scroll-top {
@@ -349,38 +270,4 @@ footer .logo{
 	#scroll-top {
 		right: 20px;
 	}
-}
-.border_gray{
-	border: 1px solid #ABABAB;
-}
-.field {
-  padding: 15px;
-  margin-right: auto;
-  margin-left: auto;
-}
-.field {
-     width: 500px;
-  }
-.margin20{
-	margin: 10px;
-}
-  @media (min-width: 414px) {
-  .field {
-    width: 320px;
-  }
-}
-@media (min-width: 768px) {
-  .field {
-    width: 350px;
-  }
-}
-@media (min-width: 992px) {
-  .field {
-     width: 400px;
-  }
-}
-@media (min-width: 1200px) {
-  .field {
-     width: 450px;
-  }
 }

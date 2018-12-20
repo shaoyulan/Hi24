@@ -14,6 +14,9 @@ html {
 body {
   margin: 0;
 }
+header{
+	margin-top: 140px;
+}
 article,
 aside,
 details,
@@ -1199,10 +1202,10 @@ h6,
 .h4,
 .h5,
 .h6 {
-  font-family: inherit;
-  font-weight: 500;
-  line-height: 1.1;
-  color: inherit;
+	font-family: inherit;
+	font-weight: 500;
+	line-height: 1.1;
+	color: inherit;
 }
 h1 small,
 h2 small,
@@ -1627,7 +1630,7 @@ pre code {
   padding-left: 15px;
 }
 .col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12 {
-  float: left;
+	float: left;
 }
 .col-xs-12 {
   width: 100%;
@@ -3932,13 +3935,15 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav > li > a > img {
   max-width: none;
 }
+
 .nav-tabs {
-	border-bottom: 1px solid #ddd;
-	background-color: #EEEEEE;
+	/*border-bottom: 1px solid #ddd;*/
+	background-color: #f8f8f8;
 }
 .nav-tabs > li {
   float: left;
-  margin-bottom: -1px;
+  margin-bottom: 5px;
+  border-bottom: 2px solid #ddd;
 }
 .nav-tabs > li > a {
   margin-right: 2px;
@@ -3947,7 +3952,8 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   border-radius: 4px 4px 0 0;
 }
 .nav-tabs > li > a:hover {
-  border-color: #eee #eee #ddd;
+  border-color: 1px solid #ddd;
+  background-color: #fff;
 }
 .nav-tabs > li.active > a,
 .nav-tabs > li.active > a:hover,
@@ -3955,7 +3961,6 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   color: #555;
   cursor: default;
   background-color: #fff;
-  border: 1px solid #ddd;
   border-bottom-color: transparent;
 }
 
@@ -3970,15 +3975,72 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 }
 
 .nav-tabs.nav-justified > li {
+  /*border-bottom: 1px solid #ddd;*/
   float: none;
 }
 .nav-tabs.nav-justified > li > a {
-  margin-bottom: 5px;
+  /*margin-bottom: 1px;*/
   text-align: center;
 }
 .nav-tabs.nav-justified > .dropdown .dropdown-menu {
   top: auto;
   left: auto;
+}
+
+.nav-tabs2 {
+  width: 80%;
+  border-bottom: 0;
+}
+
+
+.login-tab{
+	margin:auto;
+	width: 500px;
+}
+.nav-tabs2 > li {
+	float: left;
+	background-color: #fff;
+	border-bottom: 3px solid #ddd;
+}
+.nav-tabs2 > li > a {
+  margin-right: 2px;
+  line-height: 1.42857143;
+  border: 1px solid transparent;
+  border-radius: 4px 4px 0 0;
+   background-color: #eee;
+}
+.nav-tabs2 > li > a:hover {
+  border-color: #fff;
+  background-color: #eee;
+}
+.nav-tabs2 > li.active > a,
+.nav-tabs2 > li.active > a:hover,
+.nav-tabs2 > li.active > a:focus {
+  color: #555;
+  cursor: default;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-bottom-color: transparent;
+}
+.nav-tabs2.nav-justified {
+  width: 100%;
+  border-bottom: 0;
+}
+
+.nav-tabs2.nav-justified > li {
+  float: none;
+}
+.nav-tabs2.nav-justified > li > a {
+  margin-bottom: 1px;
+  text-align: center;
+}
+.nav-tabs2.nav-justified > .dropdown .dropdown-menu {
+  top: auto;
+  left: auto;
+}
+.login-tab-pane{
+	padding: 30px;
+	border: 1px solid  #eee
 }
 @media (min-width: 768px) {
   .nav-tabs.nav-justified > li {
@@ -4034,6 +4096,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav-justified {
   width: 100%;
 }
+
 .nav-justified > li {
   float: none;
 }
@@ -4624,7 +4687,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
   color: #444;
 }
 .breadcrumb {
-	margin-bottom: 20px;
+	margin-bottom: 50px;
 	list-style: none;
 	background-color: #f5f5f5;
 	border-radius: 4px;
@@ -4780,7 +4843,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
   display: inline;
   padding: .2em .6em .3em;
   font-size: 75%;
-  font-weight: bold;
+ /* font-weight: bold;*/
   line-height: 1;
   color: #fff;
   text-align: center;

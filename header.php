@@ -35,18 +35,24 @@
   <!-- 選單列 -->
  <a class="navbar-brand" href="index.php"><img src="images/in_img/logo.png" width="221" height="89" alt=""/></a>
  <div class="navbar-top navbar-right">
-       <div class="right"><a href="shopping/shopping_cart.html" style="">　<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true" data-price="0">0</span>  個商品</a></div>
-       <div class="right"><a class="login"href="member/login_register.html">登入 │ 註冊</a></div>
+       <div class="right"><a href="shopping/shopping_cart.html" style="">　<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true" data-price="0">0</span>  個商品</a>
+          <div class="cart-total js-toggle" style="height: 50px;display:none;position:absolute;box-shadow: 0 0 3px lightslategrey;border-radius: 6px;padding: 14px;    width: 210px;">
+              <span class="item-num"></span><span class="total-price">0</span>
+          </div>
+
+       </div>
+      
+       <div class="right"><a class="login"href="member/login_register.html">登入 │ 註冊</a>
+          <div class="login-form js-toggle" style="height: 120px;display:none;position:absolute;box-shadow: 0 0 3px lightslategrey;border-radius: 6px;padding: 14px;z-index: 99;background:white;">帳號: <div class="username" contenteditable="true" style="width: 140px;display: inline-block;border: 1px solid black;"></div>
+              <p></p>密碼: <div class="password" contenteditable="true" style="width: 140px;display: inline-block;border: 1px solid black;"></div>
+              <p></p>
+              <p class="login-info"></p>
+              <a href="#"><div class="submit" style="background: #E7141A;color: white;text-align: center;">登入</div></a>
+          </div>
+       </div>
        <div style="clear:both"></div>
-       <div class="login-form" style="height: 120px;display:none;position:absolute;box-shadow: 0 0 3px lightslategrey;border-radius: 6px;padding: 14px;z-index: 99;background:white;">帳號: <div class="username" contenteditable="true" style="width: 140px;display: inline-block;border: 1px solid black;"></div>
-           <p></p>密碼: <div class="password" contenteditable="true" style="width: 140px;display: inline-block;border: 1px solid black;"></div>
-           <p></p>
-           <p class="login-info"></p>
-           <a href="#"><div class="submit" style="background: #E7141A;color: white;text-align: center;">登入</div></a>
-       </div>
-       <div class="cart-total" style="height: 50px;display:none;position:absolute;box-shadow: 0 0 3px lightslategrey;border-radius: 6px;padding: 14px;    width: 210px;">
-           <span class="item-num"></span><span class="total-price">0</span>
-       </div>
+       
+       
      </div>
 </div>
 
