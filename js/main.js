@@ -37,11 +37,14 @@ jQuery(document).ready(function($) {
 	// 載入個頁面 Load specified page on click 
 	// $after_load : load 後要執行的程式
 	var Page_loader = function(e,$page_to_load,$after_load){
-		$('.footer_bg').css('opacity','0').delay(4000).fadeIn(1000);
-		$('.wraper>div').fadeOut(1000).css('display','none');
+		// to avoid footer to show up awkwardly.
+		$('.footer_bg').css('display','none');
+		// hide page we don't want to use 
+		$('.wraper>div').css('display','none');
 		// :not selector should NOT use quote mark
-		// $('.wraper>div:not(.index,#scroll-top)').css('display','block').load($page_to_load,$after_load);
-		$('.wraper>div:not(.index,#scroll-top)').fadeOut(1000).load($page_to_load,$after_load).fadeIn(4000);
+		$('.wraper>div:not(.index,#scroll-top)').fadeOut(100).load($page_to_load,$after_load).fadeIn(1000);
+
+		$('.footer_bg').delay(1000).fadeIn(500);
 	}
 
 	// 次分類中譯
@@ -96,6 +99,17 @@ jQuery(document).ready(function($) {
 		$('#isn').text(id);
 	}
 
+	function index_setup(){
+		// 放置Bbanner廣告 place Banner carousel
+		place_data('#header-slider-template','.carousel-inner',headerAds);
+		// 放置不分類商品place Content products -- Category ALL
+		place_data('#product-list-template-model','#service-one .row',products);
+		// 點擊分類後顯示商品分頁 place content products -- Category Women
+		$('a[href="#service-two"]').on('click',Call_AJAX_place_data({category_main:"women"},'#service-two .row','#product-list-template-model'));
+		$('a[href="#service-three"]').on('click',Call_AJAX_place_data({category_main:"men"},'#service-three .row','#product-list-template-model'));
+		$('a[href="#service-four"]').on('click',Call_AJAX_place_data({category_main:"kid"},'#service-four .row','#product-list-template-model'));
+	}
+
 	//預先定義  載入Prodcut_detail 後 稍後要執行的fuction
 	function prodcut_detail_func($vars){
 		
@@ -128,7 +142,8 @@ jQuery(document).ready(function($) {
 
 
 	// 各頁點擊載入--Women 圖示那張-- -- WOMEN -- All
-	$('a[href="product/product.html"]').on('click',function(e){
+	$('.wraper').on('click','a[href="product/product.html"]',function(e){
+		e.preventDefault();
 		Page_loader(e,"product/product.php",function(e){
 			// Do after_load
 			Call_AJAX_place_data({category_main:"women"},'.product .row:eq(1)','#product-list-template-model');
@@ -215,16 +230,14 @@ jQuery(document).ready(function($) {
 	    	// to send a function name(e.g change_id), you should not make it quoted like "XXX"	
 	    });
 
+	// 首頁資料載入
+	index_setup();
 
-	// 放置Bbanner廣告 place Banner carousel
-	place_data('#header-slider-template','.carousel-inner',headerAds);
-	// 放置不分類商品place Content products -- Category ALL
-	place_data('#product-list-template-model','#service-one .row',products);
-	// 點擊分類後顯示商品分頁 place content products -- Category Women
-	$('a[href="#service-two"]').on('click',Call_AJAX_place_data({category_main:"women"},'#service-two .row','#product-list-template-model'));
-	$('a[href="#service-three"]').on('click',Call_AJAX_place_data({category_main:"men"},'#service-three .row','#product-list-template-model'));
-	$('a[href="#service-four"]').on('click',Call_AJAX_place_data({category_main:"kid"},'#service-four .row','#product-list-template-model'));
-
+	$('body').on('click','a[href="index.php"]',function(e){
+		Page_loader(e,"../index.php",function(e){
+			index_setup();
+		});
+	});
 
 	// Cart number counter
 	$('.wraper').on('click','.btn-primary',function(e){
@@ -295,21 +308,37 @@ jQuery(document).ready(function($) {
 	// $('.right .login-form').focusout(function(e){$('.js-toggle').stop().slideUp(400)});
 
 	// login verify
-	$('.login-form').find('.submit').click(function(e){
-		var username = $('.username').text().trim();
-		var password = $('.password').text().trim();
+	$('body').on('click','.button',function(e){
+		var username = $('.login_register:eq(0) p:eq(1)').find('input').val().trim();
+		var password = $('.login_register:eq(0) p:eq(2)').find('input').val().trim();
 		$.post('../crud/meberVerify.php', {username: username,password:password}, function(data, textStatus, xhr) {
 			// var ans = jQuery.parseJSON(data);  ps. If the returned data is plain text, use this to transfer it to jason objet
 			if (data.verify == '錯誤的帳號或密碼'){
-				$('.login').html('<span style="color:red">'+data.verify+'!</span>');
+				$('#login').html('<span style="color:red">'+data.verify+'!</span>');
 			}else{
 				// 登入成功後收起選單
-				$('.login-form').slideToggle(400);
-				$('.login').text('親愛的'+data.verify+'您好!');
+				$('#login').html('<span style="color:red">親愛的'+data.verify+'您好!</span>')
+				.delay(1000).animate({opacity:'0'});
+				setTimeout(function(){$('.nav a[href="index.php"]').click();},3000);
 				
 			}
 		});
 	});
+	// $('.login-form').find('.submit').click(function(e){
+	// 	var username = $('.username').text().trim();
+	// 	var password = $('.password').text().trim();
+	// 	$.post('../crud/meberVerify.php', {username: username,password:password}, function(data, textStatus, xhr) {
+	// 		// var ans = jQuery.parseJSON(data);  ps. If the returned data is plain text, use this to transfer it to jason objet
+	// 		if (data.verify == '錯誤的帳號或密碼'){
+	// 			$('.login').html('<span style="color:red">'+data.verify+'!</span>');
+	// 		}else{
+	// 			// 登入成功後收起選單
+	// 			$('.login-form').slideToggle(400);
+	// 			$('.login').text('親愛的'+data.verify+'您好!');
+				
+	// 		}
+	// 	});
+	// });
 
 	// Shopping cart show/hide
 	$('.navbar-right').find('.right').first().click(function(e){

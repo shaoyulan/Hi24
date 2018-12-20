@@ -39,6 +39,7 @@
                 <!-- 會員登入 -->
                 <form>
                 <div class="login_register">
+                  <p id="login"></p>
                   <p>
                    <label for="login_pw" class="login_pw">輸入您的e-mail/手機號碼</label>
                     <input type="text" value="" size="32">
@@ -70,7 +71,7 @@
                   </p>
                   
                   <p>
-                    <a href="http://demo.boxcolor.com.tw/project/html/member/login_register2.html"><input type="button" name="button" id="button" value="登入" class="button"></a>
+                    <a href="http://demo.boxcolor.com.tw/project/html/member/login_register2.html"><input type="button" name="button" id="button2" value="登入" class="button"></a>
                   </p>
                   <p>收到簡訊驗證碼後，請依照步驟完成驗證註冊</p>   
                 </div>      
