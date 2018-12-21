@@ -63,7 +63,7 @@
                 <div class="login_register">
                 <h3 align="center">加入專屬會員</h3>            
                 <p>我們將發送簡訊驗證碼至您的手機內</p>
-                <p align="center"><img src="./Hi24 嗨購網_files/register01.jpg" width="267" height="46" alt=""></p>            
+                <p align="center"><img src="../images/member/register01.jpg" width="267" height="46" alt=""></p>            
                 <p></p>
                   <p>
                    <label for="login_pw" class="login_pw">輸入您的e-mail/手機號碼</label>

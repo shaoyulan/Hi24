@@ -236,7 +236,7 @@ jQuery(document).ready(function($) {
 	index_setup();
 
 	$('body').on('click','a[href="index.php"]',function(e){
-		Page_loader(e,"../index.php",function(e){
+		Page_loader(e,"../index_content.php",function(e){
 			index_setup();
 		});
 	});
@@ -325,21 +325,11 @@ jQuery(document).ready(function($) {
 			}
 		});
 	});
-	// $('.login-form').find('.submit').click(function(e){
-	// 	var username = $('.username').text().trim();
-	// 	var password = $('.password').text().trim();
-	// 	$.post('../crud/meberVerify.php', {username: username,password:password}, function(data, textStatus, xhr) {
-	// 		// var ans = jQuery.parseJSON(data);  ps. If the returned data is plain text, use this to transfer it to jason objet
-	// 		if (data.verify == '錯誤的帳號或密碼'){
-	// 			$('.login').html('<span style="color:red">'+data.verify+'!</span>');
-	// 		}else{
-	// 			// 登入成功後收起選單
-	// 			$('.login-form').slideToggle(400);
-	// 			$('.login').text('親愛的'+data.verify+'您好!');
-				
-	// 		}
-	// 	});
-	// });
+
+	// Member register
+	$('body').on('click','.button2',function(e){
+		
+	});
 
 	// Shopping cart show/hide
 	$('.navbar-right').find('.right').first().click(function(e){
