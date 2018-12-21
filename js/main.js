@@ -37,6 +37,8 @@ jQuery(document).ready(function($) {
 	// 載入個頁面 Load specified page on click 
 	// $after_load : load 後要執行的程式
 	var Page_loader = function(e,$page_to_load,$after_load){
+		// shut previous load thead
+		window.stop();
 		// to avoid footer to show up awkwardly.
 		$('.footer_bg').css('display','none');
 		// hide page we don't want to use 
@@ -320,7 +322,6 @@ jQuery(document).ready(function($) {
 				$('#login').html('<span style="color:red">親愛的'+data.verify+'您好!</span>')
 				.delay(1000).animate({opacity:'0'});
 				setTimeout(function(){$('.nav a[href="index.php"]').click();},3000);
-				
 			}
 		});
 	});

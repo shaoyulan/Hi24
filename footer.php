@@ -1,6 +1,6 @@
  
 <!-- Footer -->
-<div class="footer_bg">
+<div class="footer_bg test-original">
     <footer>
          <div class="container">
             <div class="row">                             
