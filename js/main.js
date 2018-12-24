@@ -332,12 +332,14 @@ jQuery(document).ready(function($) {
 		var phone_number = $(this).parent().prev().find('input').val();
 		console.log(phone_number);
 		Page_loader(e,"../member/login_register2.php");
+		
 		// 產生亂數
 		var verify_num="";
 		for (var i = 1; i <= 4; i++) {
 			verify_num += String(Math.floor((Math.random()*10)));
 		}
 		console.log(verify_num);
+		
 		// 呼叫SMS API
 		$.ajax({
 			type:'POST', //必填

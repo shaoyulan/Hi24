@@ -29,5 +29,11 @@
 	// 	echo "傳送簡訊失敗，" . $sms->processMsg . "<br />";
 	// }
 
+    $verify_num="";
+    for ($i=1; $i <=4 ; $i++) { 
+    	$verify_num .= rand(0,9);
+    }
+
+    echo $verify_num;
     echo json_encode($return);
 ?>
