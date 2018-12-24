@@ -71,7 +71,7 @@
                   </p>
                   
                   <p>
-                    <a href="http://demo.boxcolor.com.tw/project/html/member/login_register2.html"><input type="button" name="button" id="button2" value="登入" class="button"></a>
+                    <input type="button" name="button" id="button2" value="登入" class="button">
                   </p>
                   <p>收到簡訊驗證碼後，請依照步驟完成驗證註冊</p>   
                 </div>      

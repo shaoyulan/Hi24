@@ -310,7 +310,7 @@ jQuery(document).ready(function($) {
 	// $('.right .login-form').focusout(function(e){$('.js-toggle').stop().slideUp(400)});
 
 	// login verify
-	$('body').on('click','.button',function(e){
+	$('body').on('click','#button',function(e){
 		var username = $('.login_register:eq(0) p:eq(1)').find('input').val().trim();
 		var password = $('.login_register:eq(0) p:eq(2)').find('input').val().trim();
 		$.post('../crud/meberVerify.php', {username: username,password:password}, function(data, textStatus, xhr) {
@@ -326,9 +326,40 @@ jQuery(document).ready(function($) {
 		});
 	});
 
-	// Member register
-	$('body').on('click','.button2',function(e){
-		
+	// Member register 
+	$('body').on('click','#button2',function(e){
+		e.preventDefault();
+		var phone_number = $(this).parent().prev().find('input').val();
+		console.log(phone_number);
+		Page_loader(e,"../member/login_register2.php");
+		// 產生亂數
+		var verify_num="";
+		for (var i = 1; i <= 4; i++) {
+			verify_num += String(Math.floor((Math.random()*10)));
+		}
+		console.log(verify_num);
+		// 呼叫SMS API
+		$.ajax({
+			type:'POST', //必填
+			url:'../SMS API/sms_api.php',
+			dataType:'json',
+			data:{phone_number:phone_number},
+			success:function(data){
+			},
+		});
+
+		$('body').on('click','#button3',function(e){
+			//取得使用者輸入
+			console.log($(this).parent().prev().find('input').val());
+		});
+		// $('body').on('click','#button3',function(e){
+		// 	console.log($(this).closest('input').val();
+		// });
+		//偵測使用者輸入
+			// 驗證成功
+
+			// 驗證失敗
+
 	});
 
 	// Shopping cart show/hide
