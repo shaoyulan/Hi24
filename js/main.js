@@ -329,8 +329,7 @@ jQuery(document).ready(function($) {
 	// Member register 
 	$('body').on('click','#button2',function(e){
 		e.preventDefault();
-		var phone_number = $(this).parent().prev().find('input').val();
-		console.log(phone_number);
+		phone_number = $(this).parent().prev().find('input').val();
 		Page_loader(e,"../member/login_register2.php");
 		
 		// 產生亂數
@@ -338,21 +337,29 @@ jQuery(document).ready(function($) {
 		for (var i = 1; i <= 4; i++) {
 			verify_num += String(Math.floor((Math.random()*10)));
 		}
-		console.log(verify_num);
-		
+		console.log('驗證碼'+verify_num);
 		// 呼叫SMS API
 		$.ajax({
 			type:'POST', //必填
-			url:'../SMS API/sms_api.php',
+			url:'../SMS API/sms_api2.php',
 			dataType:'json',
-			data:{phone_number:phone_number},
-			success:function(data){
+			data:{phone_number:phone_number,verify_num:verify_num},
+			success:function(data, textStatus, xhr){
+				$('.login_register h3:eq(0)').text('簡訊API呼叫成功：餘額'+data.balance+'元')
+				// console.log();
+			},
+			error:function(data, textStatus, xhr){
+				console.log('smsAPI呼叫失敗'+xhr)
 			},
 		});
 
 		$('body').on('click','#button3',function(e){
 			//取得使用者輸入
 			console.log($(this).parent().prev().find('input').val());
+			var user_input = $(this).parent().prev().find('input').val();
+			if(user_input == verify_num){
+				Page_loader(e,"../member/login_register3.php");
+			}
 		});
 		// $('body').on('click','#button3',function(e){
 		// 	console.log($(this).closest('input').val();
@@ -361,8 +368,11 @@ jQuery(document).ready(function($) {
 			// 驗證成功
 
 			// 驗證失敗
-
+		
 	});
+
+
+
 
 	// Shopping cart show/hide
 	$('.navbar-right').find('.right').first().click(function(e){
