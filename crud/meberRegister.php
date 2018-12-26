@@ -7,14 +7,15 @@ include('../DB.php');
 try{
 	$pdo = new PDO("mysql:host={$in[ht]};dbname={$in[dn]};port={$in[pt]};charset={$in[ct]}","{$in[un]}","{$in[pd]}");
 }catch(PDOException $e){
-	echo "Database connection failedsss.";
+	echo "Database connection failed.";
 	exit;
 }
-
+echo $_POST['name'];
+echo $_POST['password'];
 // command SQL 
 $sql ='INSERT INTO `member`(`name`, `password`) VALUES (:name,:password)';
 $statement = $pdo->prepare($sql);
-$statement->bindValue(':name',$_POST['username']);
+$statement->bindValue(':name',$_POST['name']);
 $statement->bindValue(':password',$_POST['password']);
 $result = $statement->execute();
 

@@ -329,6 +329,7 @@ jQuery(document).ready(function($) {
 	// Member register 
 	$('body').on('click','#button2',function(e){
 		e.preventDefault();
+		// e.stopPropagation();
 		phone_number = $(this).parent().prev().find('input').val();
 		Page_loader(e,"../member/login_register2.php");
 		
@@ -353,14 +354,29 @@ jQuery(document).ready(function($) {
 			},
 		});
 
+		//使用者點擊送出簡訊驗證碼
 		$('body').on('click','#button3',function(e){
 			//取得使用者輸入
+			e.stopPropagation();
 			console.log($(this).parent().prev().find('input').val());
 			var user_input = $(this).parent().prev().find('input').val();
 			if(user_input == verify_num){
 				Page_loader(e,"../member/login_register3.php");
+				//使用者註冊密碼
+				$('body').on('click','#button4',function(e){
+					e.stopPropagation();
+					var user_RegPwd = $(this).parent().prev().find('input').val();
+					console.log('PWD'+user_RegPwd);
+					$.post('../crud/meberRegister.php', {name:phone_number,password:user_RegPwd}, function(data, textStatus, xhr) {
+						console.log('data'+data);
+						alert('註冊成功');
+					});
+				});
 			}
 		});
+
+		
+
 		// $('body').on('click','#button3',function(e){
 		// 	console.log($(this).closest('input').val();
 		// });

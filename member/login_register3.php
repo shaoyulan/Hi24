@@ -70,7 +70,7 @@
                   </p>
                   
                   <p>
-                    <input type="button" name="button" id="button" value="完成" class="button">
+                    <input type="button" name="button4" id="button4" value="完成" class="button">
                   </p>
                   <p>您的註冊即將完成</p>
                  <!-- 註冊成功，直接進入會員頁 -->
