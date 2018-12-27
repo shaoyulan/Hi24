@@ -10,8 +10,8 @@ try{
 	echo "Database connection failed.";
 	exit;
 }
-echo $_POST['name'];
-echo $_POST['password'];
+// echo $_POST['name'];
+// echo $_POST['password'];
 // command SQL 
 $sql ='INSERT INTO `member`(`name`, `password`) VALUES (:name,:password)';
 $statement = $pdo->prepare($sql);

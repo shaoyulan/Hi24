@@ -1,6 +1,6 @@
 jQuery(document).ready(function($) {
 //default set up
-
+	
 	//建立模板產生、放置器 fill template function
 	var place_data = function($structure,$target,$data){
 		var html_structure = $($structure).html();
@@ -337,7 +337,7 @@ jQuery(document).ready(function($) {
 
 	// login verify
 	$('body').on('click','#button',function(e){
-		var username = $('.login_register:eq(0) p:eq(1)').find('input').val().trim();
+		username = $('.login_register:eq(0) p:eq(1)').find('input').val().trim();
 		var password = $('.login_register:eq(0) p:eq(2)').find('input').val().trim();
 		console.log('ps'+password+'us'+username);
 		$.ajax({
@@ -350,7 +350,7 @@ jQuery(document).ready(function($) {
 				if (data.verify == '錯誤的帳號或密碼'){
 					$('#login').html('<span style="color:red">'+data.verify+'!</span>');
 				}else{
-					// 登入成功後收起選單
+					// 設定內存username
 					sessionStorage.setItem('username',username);
 					
 					//提示登入成功、導回首頁
@@ -411,24 +411,29 @@ jQuery(document).ready(function($) {
 					e.stopPropagation();
 					var user_RegPwd = $(this).parent().prev().find('input').val();
 					console.log('PWD'+user_RegPwd);
-					// $.ajax({
-					// 	type:'POST', //必填
-					// 	url:'../SMS API/sms_api2.php',
-					// 	dataType:'json',
-					// 	data:{phone_number:phone_number,verify_num:verify_num},
-					// 	success:function(data, textStatus, xhr){
-					// 		$('.login_register h3:eq(0)').text('簡訊API呼叫成功：餘額'+data.balance+'元')
-					// 		// console.log();
-					// 	},
-					// 	error:function(data, textStatus, xhr){
-					// 		console.log('smsAPI呼叫失敗'+xhr)
-					// 	},
-					// });
+					$.ajax({
+						type:'POST', //必填
+						url:'../crud/meberRegister.php',
+						dataType:'json',
+						data:{name:phone_number,password:user_RegPwd},
+						success:function(data, textStatus, xhr){
+							console.log('data'+data);
+							alert('註冊成功');
+							// 設定內存username
+							sessionStorage.setItem('username',phone_number);
+							// 導向回首頁
+							setTimeout(function(){window.location.href='index.php';},2000);
 
-					$.post('../crud/meberRegister.php', {name:phone_number,password:user_RegPwd}, function(data, textStatus, xhr) {
-						console.log('data'+data);
-						alert('註冊成功');
+						},
+						error:function(data, textStatus, xhr){
+							console.log('失敗'+xhr)
+						},
 					});
+
+					// $.post('../crud/meberRegister.php', {name:phone_number,password:user_RegPwd}, function(data, textStatus, xhr) {
+					// 	console.log('data'+data);
+					// 	alert('註冊成功');
+					// });
 				});
 			}
 		});
