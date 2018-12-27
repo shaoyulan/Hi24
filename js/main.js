@@ -1,5 +1,6 @@
 jQuery(document).ready(function($) {
 //default set up
+
 	//建立模板產生、放置器 fill template function
 	var place_data = function($structure,$target,$data){
 		var html_structure = $($structure).html();
@@ -14,6 +15,7 @@ jQuery(document).ready(function($) {
 
 	// 建立可塞選的模板產生器，用於點擊不同分類時 篩選基準category_main、sub
 	var Call_AJAX_place_data = function($info_to_send,$where_to_place,$structure,$func){
+		console.log('Call_AJAX_place_data');
 		//判斷裡面是否為空，為空則抓取資料
 		if ($($where_to_place).find('.col-md-3').length == 0){
 			$.ajax({
@@ -34,11 +36,19 @@ jQuery(document).ready(function($) {
 		}
 	}
 
-	// 載入個頁面 Load specified page on click 
+	// 載入各頁面 Load specified page on click 
 	// $after_load : load 後要執行的程式
 	var Page_loader = function(e,$page_to_load,$after_load){
 		// shut previous load thead
 		window.stop();
+		console.log('pageloader');
+		
+		// 網站頁面載入，使用者是否存在
+		if(sessionStorage.getItem('username')){
+			username = sessionStorage.getItem('username');
+			$('.right .login').html("<span style='color:red'>"+username+"您好!</span>");
+		}
+
 		// to avoid footer to show up awkwardly.
 		$('.footer_bg').css('display','none');
 		// hide page we don't want to use 
@@ -47,7 +57,14 @@ jQuery(document).ready(function($) {
 		$('.wraper>div:not(.index,#scroll-top)').fadeOut(100).load($page_to_load,$after_load).fadeIn(1000);
 
 		$('.footer_bg').delay(1000).fadeIn(500);
+
+		// history.pushState('',$page_to_load,$page_to_load);
 	}
+
+	// window.onpopstate = function(e){
+	// 	var path = location.pathname;
+
+	// }
 
 	// 次分類中譯
 	var Category_translate = function($EngName){
@@ -102,14 +119,17 @@ jQuery(document).ready(function($) {
 	}
 
 	function index_setup(){
+		console.log('index_setup');
+		// 新增history
+		history.pushState('','index','index.php');
 		// 放置Bbanner廣告 place Banner carousel
 		place_data('#header-slider-template','.carousel-inner',headerAds);
 		// 放置不分類商品place Content products -- Category ALL
 		place_data('#product-list-template-model','#service-one .row',products);
 		// 點擊分類後顯示商品分頁 place content products -- Category Women
-		$('a[href="#service-two"]').on('click',Call_AJAX_place_data({category_main:"women"},'#service-two .row','#product-list-template-model'));
-		$('a[href="#service-three"]').on('click',Call_AJAX_place_data({category_main:"men"},'#service-three .row','#product-list-template-model'));
-		$('a[href="#service-four"]').on('click',Call_AJAX_place_data({category_main:"kid"},'#service-four .row','#product-list-template-model'));
+		$('body a[href="#service-two"]').on('click',Call_AJAX_place_data({category_main:"women"},'#service-two .row','#product-list-template-model'));
+		$('body a[href="#service-three"]').on('click',Call_AJAX_place_data({category_main:"men"},'#service-three .row','#product-list-template-model'));
+		$('body a[href="#service-four"]').on('click',Call_AJAX_place_data({category_main:"kid"},'#service-four .row','#product-list-template-model'));
 	}
 
 	//預先定義  載入Prodcut_detail 後 稍後要執行的fuction
@@ -142,9 +162,15 @@ jQuery(document).ready(function($) {
 		  // 依第一件item id 修改size 區塊 
 	} 
 
+	
+	// 網站初始載入，使用者是否存在
+	if(sessionStorage.getItem('username')){
+		username = sessionStorage.getItem('username');
+		$('.right .login').html("<span style='color:red'>"+username+"您好!</span>");
+	}
 
 	// 各頁點擊載入--Women 圖示那張-- -- WOMEN -- All
-	$('.wraper').on('click','a[href="product/product.html"]',function(e){
+	$('body').on('click','a[href="product/product.html"]',function(e){
 		e.preventDefault();
 		Page_loader(e,"product/product.php",function(e){
 			// Do after_load
@@ -313,17 +339,35 @@ jQuery(document).ready(function($) {
 	$('body').on('click','#button',function(e){
 		var username = $('.login_register:eq(0) p:eq(1)').find('input').val().trim();
 		var password = $('.login_register:eq(0) p:eq(2)').find('input').val().trim();
-		$.post('../crud/meberVerify.php', {username: username,password:password}, function(data, textStatus, xhr) {
-			// var ans = jQuery.parseJSON(data);  ps. If the returned data is plain text, use this to transfer it to jason objet
-			if (data.verify == '錯誤的帳號或密碼'){
-				$('#login').html('<span style="color:red">'+data.verify+'!</span>');
-			}else{
-				// 登入成功後收起選單
-				$('#login').html('<span style="color:red">親愛的'+data.verify+'您好!</span>')
-				.delay(1000).animate({opacity:'0'});
-				setTimeout(function(){$('.nav a[href="index.php"]').click();},3000);
-			}
+		console.log('ps'+password+'us'+username);
+		$.ajax({
+			type:'POST', //必填
+			url:'../crud/meberVerify.php',
+			dataType:'json',
+			data:{username: username,password:password},
+			success:function(data, textStatus, xhr){
+
+				if (data.verify == '錯誤的帳號或密碼'){
+					$('#login').html('<span style="color:red">'+data.verify+'!</span>');
+				}else{
+					// 登入成功後收起選單
+					sessionStorage.setItem('username',username);
+					
+					//提示登入成功、導回首頁
+					$('#login').html('<span style="color:red">親愛的'+data.verify+'您好!</span>')
+					.delay(500).animate({opacity:'0'},400,function(e){
+						$('#login span').text('將帶您回到首頁').parent().animate({opacity:'1'},400);
+					});
+					setTimeout(function(){window.location.href='index.php';},2000);
+					// The following method won't work
+					// setTimeout(function(){$('.nav a[href="index.php"]').click();},2000);
+				}
+			},
+			error:function(data, textStatus, xhr){
+				console.log('smsAPI呼叫失敗'+xhr)
+			},
 		});
+
 	});
 
 	// Member register 
@@ -367,6 +411,20 @@ jQuery(document).ready(function($) {
 					e.stopPropagation();
 					var user_RegPwd = $(this).parent().prev().find('input').val();
 					console.log('PWD'+user_RegPwd);
+					// $.ajax({
+					// 	type:'POST', //必填
+					// 	url:'../SMS API/sms_api2.php',
+					// 	dataType:'json',
+					// 	data:{phone_number:phone_number,verify_num:verify_num},
+					// 	success:function(data, textStatus, xhr){
+					// 		$('.login_register h3:eq(0)').text('簡訊API呼叫成功：餘額'+data.balance+'元')
+					// 		// console.log();
+					// 	},
+					// 	error:function(data, textStatus, xhr){
+					// 		console.log('smsAPI呼叫失敗'+xhr)
+					// 	},
+					// });
+
 					$.post('../crud/meberRegister.php', {name:phone_number,password:user_RegPwd}, function(data, textStatus, xhr) {
 						console.log('data'+data);
 						alert('註冊成功');
