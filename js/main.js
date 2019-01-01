@@ -2,11 +2,13 @@ jQuery(document).ready(function($) {
 //default set up
 	
 	//建立模板產生、放置器 fill template function
-	var place_data = function($structure,$target,$data){
+	function place_data($structure,$target,$data)
+	{
 		var html_structure = $($structure).html();
 		var compiled_template = Handlebars.compile(html_structure);
 		var UI = '';
-		$.each($data,function(index,data){
+		$.each($data,function(index,data)
+		{
 			UI = UI + compiled_template(data);
 		});
 		$($target).html(UI);
@@ -14,7 +16,7 @@ jQuery(document).ready(function($) {
 	};
 
 	// 建立可塞選的模板產生器，用於點擊不同分類時 篩選基準category_main、sub
-	var Call_AJAX_place_data = function($info_to_send,$where_to_place,$structure,$func){
+	function Call_AJAX_place_data($info_to_send,$where_to_place,$structure,$func){
 		console.log('Call_AJAX_place_data');
 		//判斷裡面是否為空，為空則抓取資料
 		if ($($where_to_place).find('.col-md-3').length == 0){
@@ -38,11 +40,13 @@ jQuery(document).ready(function($) {
 
 	// 載入各頁面 Load specified page on click 
 	// $after_load : load 後要執行的程式
-	var Page_loader = function(e,$page_to_load,$after_load){
+	function Page_loader(e,$page_to_load,$after_load){
 		// shut previous load thead
 		window.stop();
 		console.log('pageloader');
-		
+		// 更新URL history
+		history.pushState('pageInfo'+(Math.random()*10),'pageInfo','pageInfo');
+		console.log('pgl'+history.state);
 		// 網站頁面載入，使用者是否存在
 		if(sessionStorage.getItem('username')){
 			username = sessionStorage.getItem('username');
@@ -55,20 +59,25 @@ jQuery(document).ready(function($) {
 		$('.wraper>div').css('display','none');
 		// :not selector should NOT use quote mark
 		$('.wraper>div:not(.index,#scroll-top)').fadeOut(100).load($page_to_load,$after_load).fadeIn(1000);
-
+		
 		$('.footer_bg').delay(1000).fadeIn(500);
-
-		// history.pushState('',$page_to_load,$page_to_load);
+		// Scroll Top after load
+		scrollTop();
 	}
 
-	// window.onpopstate = function(e){
-	// 	var path = location.pathname;
+	window.onpopstate = function(e){
+		var func = location.pathname;
+		console.log(history.state);
+		func = func.replace('/','');
 
-	// }
+		func +='()';
+		console.log(func);
+		eval(func);
+	}
 
 	// 次分類中譯
-	var Category_translate = function($EngName){
-		// var subCat='';
+	function Category_translate($EngName){
+		var Cat;
 		switch($EngName){
 			case 'upper':
 				Cat = '上衣類';
@@ -97,19 +106,24 @@ jQuery(document).ready(function($) {
 
 	//依Color Size抓取ID
 	// AJAX doesn't return value, so $func is optional for use
-	var get_item_id = function($title,$size,$func){
+	function get_item_id($title,$size,$func){
+		console.log('title'+$title+'size'+$size+'func'+$func);
 		$.ajax({
 			type:'POST', //必填
 			url:'../crud/dataFiltered.php',
 			dataType:'json',
 			data:{title:$title,size:$size,mode:'product_item_detail_id'},
 			success:function(data){
+
 				id = data[0]["item_id"];
 				// optional
 				if(!$func==""){
 					$func(id);
 				}
 			},
+			error:function(a,b,c){
+				console.log('error'+c);
+			}
 		});
 
 	}
@@ -119,9 +133,8 @@ jQuery(document).ready(function($) {
 	}
 
 	function index_setup(){
-		console.log('index_setup');
 		// 新增history
-		history.pushState('','index','index.php');
+		history.pushState('','index_setup','index');
 		// 放置Bbanner廣告 place Banner carousel
 		place_data('#header-slider-template','.carousel-inner',headerAds);
 		// 放置不分類商品place Content products -- Category ALL
@@ -162,47 +175,34 @@ jQuery(document).ready(function($) {
 		  // 依第一件item id 修改size 區塊 
 	} 
 
-	
-	// 網站初始載入，使用者是否存在
-	if(sessionStorage.getItem('username')){
-		username = sessionStorage.getItem('username');
-		$('.right .login').html("<span style='color:red'>"+username+"您好!</span>");
+	// 各頁面載入的function
+	function index(e){
+		Page_loader(e,"../index_content.php",function(e){
+			index_setup();
+		});
 	}
 
-	// 各頁點擊載入--Women 圖示那張-- -- WOMEN -- All
-	$('body').on('click','a[href="product/product.html"]',function(e){
-		e.preventDefault();
+	function women_page_all(e){
+		if(e){
+			e.preventDefault();
+		}
 		Page_loader(e,"product/product.php",function(e){
 			// Do after_load
 			Call_AJAX_place_data({category_main:"women"},'.product .row:eq(1)','#product-list-template-model');
 		});
-	});
+	}
 
-	// 各頁點擊載入--Women下方分頁區塊-- -- WOMEN -- Upper
-	$('a[href="product/product_paging.php"]').on('click',function(e){
-		var url = this.href; 
-		console.log(
-		); //url = http://localhost:8888/product/product_paging.php
-		Page_loader(e,url,function(e){
-			// Do after_load
-			Call_AJAX_place_data({category_main:"women",category_sub:"upper",mode:"2"},'.product_paging .service-two','#product-list-template');
-		});
-	});
-
-	
-
-	// 商品詳細頁點擊載入 - -- ALL
-	$('.row').on('click','a[href="product/Product_detail.html"]',function(e){
+	function page_detail(e,$this){
 		e.preventDefault();
 		e.stopPropagation();
 		// Breadcrumb bar
-		var title = $(this).parent().data('title');
-		var mainCat = $(this).parent().data('maincat');
-		var subCat = $(this).parent().data('subcat');
+		var title = $($this).parent().data('title');
+		var mainCat = $($this).parent().data('maincat');
+		var subCat = $($this).parent().data('subcat');
 		var subCat = Category_translate(subCat);
-		var price_org = $(this).next().find('.p_price:eq(0)').text();
-		var price_dis = $(this).next().find('.p_prices').text();
-		id = $(this).parent().data('id');
+		var price_org = $($this).next().find('.p_price:eq(0)').text();
+		var price_dis = $($this).next().find('.p_prices').text();
+		id = $($this).parent().data('id');
 		Page_loader(e,"product/Product_detail.php",function(e){
 
 			// Do after_load
@@ -220,6 +220,35 @@ jQuery(document).ready(function($) {
 			Call_AJAX_place_data({id:id,mode:'product_item_detail'},'.product_detail .p_color','#product_main_photos',prodcut_detail_func);
 			
 		});
+	}
+
+	// 網站初始載入，使用者是否存在
+	if(sessionStorage.getItem('username')){
+		username = sessionStorage.getItem('username');
+		$('.right .login').html("<span style='color:red'>"+username+"您好!</span>");
+	}
+
+	// 各頁點擊載入--Women 圖示那張-- -- WOMEN -- All
+	$('body').on('click','a[href="product/product.html"]',function(e){
+		women_page_all(e);
+	});
+
+	// 各頁點擊載入--Women下方分頁區塊-- -- WOMEN -- Upper
+	$('a[href="product/product_paging.php"]').on('click',function(e){
+		e.preventDefault();
+		var url = this.href; 
+		//url = http://localhost:8888/product/product_paging.php
+		Page_loader(e,url,function(e){
+			// Do after_load
+			Call_AJAX_place_data({category_main:"women",category_sub:"upper",mode:"2"},'.product_paging .service-two','#product-list-template',"");
+		});
+	});
+
+	
+
+	// 商品詳細頁點擊載入 - -- ALL
+	$('.row').on('click','a[href="product/Product_detail.html"]',function(e){
+		page_detail(e,this);
 	});
 
 	// 商品詳細頁各項功能
@@ -262,9 +291,7 @@ jQuery(document).ready(function($) {
 	index_setup();
 
 	$('body').on('click','a[href="index.php"]',function(e){
-		Page_loader(e,"../index_content.php",function(e){
-			index_setup();
-		});
+		index(e);
 	});
 
 	// Cart number counter
@@ -464,10 +491,12 @@ jQuery(document).ready(function($) {
 
 
 // InterFace UI/UX
+	function scrollTop(){
+		$('body').animate({'scrollTop':0},600);
+	}
 	// Scroll-top icon
 	$('#scroll-top').click(function(e){
-		console.log('test');
-		$('body').animate({'scrollTop':0},600);
+		scrollTop();		
 	})
 //paging
 
