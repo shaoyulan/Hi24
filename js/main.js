@@ -17,7 +17,8 @@ jQuery(document).ready(function($) {
 
 	// 建立可塞選的模板產生器，用於點擊不同分類時 篩選基準category_main、sub
 	function Call_AJAX_place_data($info_to_send,$where_to_place,$structure,$func){
-		console.log('Call_AJAX_place_data');
+		// console.log('Call_AJAX_place_data');
+
 		//判斷裡面是否為空，為空則抓取資料
 		if ($($where_to_place).find('.col-md-3').length == 0){
 			$.ajax({
@@ -40,13 +41,37 @@ jQuery(document).ready(function($) {
 
 	// 載入各頁面 Load specified page on click 
 	// $after_load : load 後要執行的程式
+	var counter = 0;
+	var bookmark = []; // 紀錄不要pushstate的頁面
 	function Page_loader(e,$page_to_load,$after_load){
 		// shut previous load thead
 		window.stop();
-		console.log('pageloader');
+		console.log('pageloader',location.pathname);
 		// 更新URL history
-		history.pushState('pageInfo'+(Math.random()*10),'pageInfo','pageInfo');
-		console.log('pgl'+history.state);
+		
+		console.log('page_to_load',$page_to_load);
+		// 按上一頁會回到下面這個頁面
+		// if(($page_to_load =='../index_content.php') && (counter!=0))
+
+		// {
+		// 	console.log('secondINDEX');
+		// 	history.pushState(history.state,'pageInfo','index');
+		// }
+
+		if(!bookmark.includes('page_detail')){
+			// 網址列須變更，否則視為同一頁?
+			//
+
+			var fill = $page_to_load;
+			var fill = fill.split('/')[1];
+			console.log('fill',fill);
+			history.pushState(counter,'pageInfo','page_detail');
+			console.log('state',history.state);
+			counter++;
+			bookmark.push('page_detail');
+		}
+
+		console.log('pgl',history.length);
 		// 網站頁面載入，使用者是否存在
 		if(sessionStorage.getItem('username')){
 			username = sessionStorage.getItem('username');
@@ -60,20 +85,45 @@ jQuery(document).ready(function($) {
 		// :not selector should NOT use quote mark
 		$('.wraper>div:not(.index,#scroll-top)').fadeOut(100).load($page_to_load,$after_load).fadeIn(1000);
 		
+		console.log('AFTERpageloader',location.pathname);
+
 		$('.footer_bg').delay(1000).fadeIn(500);
 		// Scroll Top after load
 		scrollTop();
 	}
 
-	window.onpopstate = function(e){
+	$(window).on('popstate',function(e){
 		var func = location.pathname;
-		console.log(history.state);
-		func = func.replace('/','');
+		// console.log('back',history.state);
+		console.log('popstate',func);
+		console.log('state',history.state);
+		//pathname '/' = 要呼叫'index'
+		if(func=='/'){
+			func = 'index';
+		}
 
+		// 否則pathname = location.pathname
+		func = func.replace('/','');
 		func +='()';
-		console.log(func);
+		
 		eval(func);
-	}
+	});
+	// window.onpopstate = function(e){
+	// 	var func = location.pathname;
+	// 	// console.log('back',history.state);
+	// 	console.log('popstate',func);
+	// 	console.log('state',history.state);
+	// 	//pathname '/' = 要呼叫'index'
+	// 	if(func=='/'){
+	// 		func = 'index';
+	// 	}
+
+	// 	// 否則pathname = location.pathname
+	// 	func = func.replace('/','');
+	// 	func +='()';
+		
+	// 	eval(func);
+	// }
 
 	// 次分類中譯
 	function Category_translate($EngName){
@@ -107,7 +157,8 @@ jQuery(document).ready(function($) {
 	//依Color Size抓取ID
 	// AJAX doesn't return value, so $func is optional for use
 	function get_item_id($title,$size,$func){
-		console.log('title'+$title+'size'+$size+'func'+$func);
+		// console.log('title'+$title+'size'+$size+'func'+$func);
+		
 		$.ajax({
 			type:'POST', //必填
 			url:'../crud/dataFiltered.php',
@@ -115,7 +166,7 @@ jQuery(document).ready(function($) {
 			data:{title:$title,size:$size,mode:'product_item_detail_id'},
 			success:function(data){
 
-				id = data[0]["item_id"];
+				var id = data[0]["item_id"];
 				// optional
 				if(!$func==""){
 					$func(id);
@@ -134,7 +185,11 @@ jQuery(document).ready(function($) {
 
 	function index_setup(){
 		// 新增history
-		history.pushState('','index_setup','index');
+		var count = 0;// index初次載入不用push
+		if(count!=0){
+			history.pushState('index','index_setup','index');
+			count++;
+		}
 		// 放置Bbanner廣告 place Banner carousel
 		place_data('#header-slider-template','.carousel-inner',headerAds);
 		// 放置不分類商品place Content products -- Category ALL
@@ -172,6 +227,7 @@ jQuery(document).ready(function($) {
      	   // 將商品編號改為第一件的
 		   var size = $('.p_size:eq(0)').text();
 		   var id = get_item_id(title,size,change_id)
+
 		  // 依第一件item id 修改size 區塊 
 	} 
 
@@ -192,17 +248,31 @@ jQuery(document).ready(function($) {
 		});
 	}
 
+	// 全域以供其他FUNCTION 使用
+	var title;
+	var mainCatl;
+	var subCat;
+	var price_org;
+	var price_dis;
+	var id;
 	function page_detail(e,$this){
-		e.preventDefault();
-		e.stopPropagation();
-		// Breadcrumb bar
-		var title = $($this).parent().data('title');
-		var mainCat = $($this).parent().data('maincat');
-		var subCat = $($this).parent().data('subcat');
-		var subCat = Category_translate(subCat);
-		var price_org = $($this).next().find('.p_price:eq(0)').text();
-		var price_dis = $($this).next().find('.p_prices').text();
-		id = $($this).parent().data('id');
+		if(e){
+			e.preventDefault();
+			e.stopPropagation();
+
+
+			// e存在 代表是使用者點擊商品
+			title = $($this).parent().data('title');
+			mainCat = $($this).parent().data('maincat');
+			subCat = $($this).parent().data('subcat');
+			subCat = Category_translate(subCat);
+			price_org = $($this).next().find('.p_price:eq(0)').text();
+			price_dis = $($this).next().find('.p_prices').text();
+			id = $($this).parent().data('id');
+
+			// e不存在 使用全域變數
+		}
+		
 		Page_loader(e,"product/Product_detail.php",function(e){
 
 			// Do after_load
@@ -213,7 +283,6 @@ jQuery(document).ready(function($) {
 			$('.breadcrumb').find('li:eq(3)').text(title);
 			$('.product_detail .p_price_midline').text(price_org);
 			$('.product_detail .p_price_money').text(price_dis);
-
 			Call_AJAX_place_data({id:id,mode:'product_detail'},'.photo_places','#product_default_photos');
 
 			// 載入替換的四張照片、設定對應色塊
@@ -247,7 +316,7 @@ jQuery(document).ready(function($) {
 	
 
 	// 商品詳細頁點擊載入 - -- ALL
-	$('.row').on('click','a[href="product/Product_detail.html"]',function(e){
+	$('body').on('click','a[href="product/Product_detail.html"]',function(e){
 		page_detail(e,this);
 	});
 
@@ -293,6 +362,7 @@ jQuery(document).ready(function($) {
 	$('body').on('click','a[href="index.php"]',function(e){
 		index(e);
 	});
+
 
 	// Cart number counter
 	$('.wraper').on('click','.btn-primary',function(e){
