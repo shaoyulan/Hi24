@@ -52,7 +52,7 @@
                     <input type="button" name="button" id="button" value="登入" class="button">
                   </p>
                   <p class="link"><span class="link left"><input type="checkbox">
-                  記住我</span> <a href="http://demo.boxcolor.com.tw/project/html/member/forgetpw.html"><span class="link right">忘記密碼？</span></a></p>
+                  記住我</span> <a class="forgot-pswd" href="http://demo.boxcolor.com.tw/project/html/member/forgetpw.html"><span class="link right ">忘記密碼？</span></a></p>
                 </div>
                  </form> 
                  
