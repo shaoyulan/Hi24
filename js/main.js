@@ -267,7 +267,7 @@ jQuery(document).ready(function($) {
 	}
 	// 全域以供其他FUNCTION 使用
 	var title;
-	var mainCatl;
+	var mainCat;
 	var subCat;
 	var price_org;
 	var price_dis;
